@@ -1,5 +1,6 @@
 import pygame
 import math
+import random
 
 pygame.init()
 
@@ -9,43 +10,57 @@ FPS = 60
 SCREEN_WIDTH = 1500
 SCREEN_HEIGHT = 600
 
-#create game window
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Endless Scroll")
 
-#load image
 bg = pygame.image.load("images/bg.png").convert()
 bg_width = bg.get_width()
 bg_rect = bg.get_rect()
 
-#define game variables
 scroll = 0
 tiles = math.ceil(SCREEN_WIDTH  / bg_width) + 1
 
-#game loop
+class Obstacle(pygame.sprite.Sprite):
+    def __init__(self, x, y):
+        super().__init__()
+        self.image = pygame.Surface((50, 50))
+        self.image.fill((255, 0, 0))
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+
+obstacle_group = pygame.sprite.Group()
+
 run = True
 while run:
 
-  clock.tick(FPS)
+    clock.tick(FPS)
 
-  #draw scrolling background
-  for i in range(0, tiles):
-    screen.blit(bg, (i * bg_width + scroll,0))
-    bg_rect.x = i * bg_width + scroll
-    pygame.draw.rect(screen, (0, 0, 0), bg_rect, 1)
+    for i in range(0, tiles):
+        screen.blit(bg, (i * bg_width + scroll,0))
+        bg_rect.x = i * bg_width + scroll
 
-  #scroll background
-  scroll -= 5
+    # Generate random obstacles
+    if random.randint(0, 100) < 5:
+        new_obstacle = Obstacle(SCREEN_WIDTH, SCREEN_HEIGHT - 100)
+        obstacle_group.add(new_obstacle)
 
-  #reset scroll
-  if abs(scroll) > bg_width:
-    scroll = 0
+    # Move obstacles
+    for obstacle in obstacle_group:
+        obstacle.rect.x -= 5
 
-  #event handler
-  for event in pygame.event.get():
-    if event.type == pygame.QUIT:
-      run = False
+    # Draw obstacles
+    obstacle_group.draw(screen)
 
-  pygame.display.update()
+    scroll -= 5
+
+    if abs(scroll) > bg_width:
+        scroll = 0
+
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            run = False
+
+    pygame.display.update()
 
 pygame.quit()
