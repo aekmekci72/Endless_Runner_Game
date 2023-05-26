@@ -32,7 +32,6 @@ while run:
   for i in range(0, tiles):
     screen.blit(bg, (i * bg_width + scroll,0))
     bg_rect.x = i * bg_width + scroll
-    pygame.draw.rect(screen, (0, 0, 0), bg_rect, 1)
 
   #scroll background
   scroll -= 5
