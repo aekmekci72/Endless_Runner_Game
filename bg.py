@@ -9,6 +9,9 @@ FPS = 60
 
 SCREEN_WIDTH = 1500
 SCREEN_HEIGHT = 600
+GRAVITY = 0.6
+JUMP_FORCE = -15
+
 
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Endless Scroll")
@@ -37,6 +40,8 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
+        self.velocity_y = 0
+        self.is_jumping = False
 
 obstacle_group = pygame.sprite.Group()
 
@@ -69,6 +74,15 @@ while run:
     obstacle_group.draw(screen)
     player.draw(screen)
 
+    p.velocity_y += GRAVITY
+    
+    p.rect.y += p.velocity_y
+    
+    if p.rect.y >= SCREEN_HEIGHT - 75:  
+        p.rect.y = SCREEN_HEIGHT - 75
+        p.velocity_y = 0
+        p.is_jumping = False
+
     scroll -= 5
 
     if abs(scroll) > bg_width:
@@ -77,14 +91,16 @@ while run:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_UP:
-                print("up arrow")
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_UP and not p.is_jumping: 
+                p.velocity_y = JUMP_FORCE
+                p.is_jumping = True
         if event.type==pygame.MOUSEBUTTONDOWN:
             position=pygame.mouse.get_pos()
             print("mouse clicked")
         if event.type == pygame.QUIT:
             run = False
+
 
     pygame.display.update()
 
