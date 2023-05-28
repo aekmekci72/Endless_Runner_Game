@@ -83,6 +83,10 @@ while run:
         p.velocity_y = 0
         p.is_jumping = False
 
+    die = pygame.sprite.spritecollide(p, obstacle_group, False)
+    if die:
+        run = False
+
     scroll -= 5
 
     if abs(scroll) > bg_width:
