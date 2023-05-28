@@ -29,11 +29,24 @@ class Obstacle(pygame.sprite.Sprite):
         self.rect.x = x
         self.rect.y = y
 
+class Player(pygame.sprite.Sprite):
+    def __init__(self,x,y):
+        super().__init__()
+        self.image=pygame.Surface((25,25))
+        self.image.fill((255, 0, 0))
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+
 obstacle_group = pygame.sprite.Group()
 
 run = True
 freq=250
 counter=0
+
+p = Player(50, SCREEN_HEIGHT - 75)
+player=pygame.sprite.Group()
+player.add(p)
 
 while run:
     
@@ -50,12 +63,11 @@ while run:
         counter=0
         freq-=5
 
-    # Move obstacles
     for obstacle in obstacle_group:
         obstacle.rect.x -= 5
 
-    # Draw obstacles
     obstacle_group.draw(screen)
+    player.draw(screen)
 
     scroll -= 5
 
