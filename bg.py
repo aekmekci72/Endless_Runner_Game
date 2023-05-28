@@ -22,7 +22,7 @@ bg_rect = bg.get_rect()
 
 
 spike1 = [pygame.image.load("images/spike1.png").convert_alpha(), 50,50]
-spike3 = [pygame.image.load("images/spike3.png").convert_alpha(), 150, 50]
+spike3 = [pygame.image.load("images/spike3.png").convert_alpha(), 120, 50]
 
 obslist=[spike1,spike3]
 
