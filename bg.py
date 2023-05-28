@@ -20,14 +20,20 @@ bg = pygame.image.load("images/bg.png").convert()
 bg_width = bg.get_width()
 bg_rect = bg.get_rect()
 
+
+spike1 = [pygame.image.load("images/spike1.png").convert_alpha(), 50,50]
+spike3 = [pygame.image.load("images/spike3.png").convert_alpha(), 150, 50]
+
+obslist=[spike1,spike3]
+
 scroll = 0
 tiles = math.ceil(SCREEN_WIDTH  / bg_width) + 1
 
 class Obstacle(pygame.sprite.Sprite):
     def __init__(self, x, y):
         super().__init__()
-        self.image = pygame.Surface((50, 50))
-        self.image.fill((255, 0, 0))
+        r=random.randint(1,len(obslist))-1
+        self.image = pygame.transform.scale((obslist[r])[0], ((obslist[r])[1], (obslist[r])[2]))
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
@@ -66,7 +72,7 @@ while run:
         new_obstacle = Obstacle(SCREEN_WIDTH, SCREEN_HEIGHT - 100)
         obstacle_group.add(new_obstacle)
         counter=0
-        freq-=5
+        freq-=10
 
     for obstacle in obstacle_group:
         obstacle.rect.x -= 5
