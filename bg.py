@@ -32,18 +32,22 @@ class Obstacle(pygame.sprite.Sprite):
 obstacle_group = pygame.sprite.Group()
 
 run = True
+freq=250
+counter=0
+
 while run:
 
     clock.tick(FPS)
-
+    
     for i in range(0, tiles):
         screen.blit(bg, (i * bg_width + scroll,0))
         bg_rect.x = i * bg_width + scroll
-
-    # Generate random obstacles
-    if random.randint(0, 100) < 5:
+    counter+=1
+    if counter==freq:
         new_obstacle = Obstacle(SCREEN_WIDTH, SCREEN_HEIGHT - 100)
         obstacle_group.add(new_obstacle)
+        counter=0
+        freq-=5
 
     # Move obstacles
     for obstacle in obstacle_group:
