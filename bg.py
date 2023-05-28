@@ -9,6 +9,16 @@ FPS = 60
 
 SCREEN_WIDTH = 1500
 SCREEN_HEIGHT = 600
+X_POSITION, Y_POSITION = 400, 530
+jumping = False
+
+Y_GRAVITY = 0.6
+JUMP_HEIGHT = 20
+Y_VELOCITY = JUMP_HEIGHT
+
+STANDING_SURFACE = pygame.transform.scale(pygame.image.load("images/char_stand.png"), (48, 64))
+JUMPING_SURFACE = pygame.transform.scale(pygame.image.load("images/char_jump.png"), (48, 64))
+mario_rect = STANDING_SURFACE.get_rect(center=(X_POSITION, Y_POSITION))
 
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Endless Scroll")
@@ -51,6 +61,26 @@ while run:
 
     # Draw obstacles
     obstacle_group.draw(screen)
+
+    # Handle character jumping
+    if jumping:
+        mario_rect.y -= Y_VELOCITY
+        Y_VELOCITY -= Y_GRAVITY
+        if mario_rect.bottom >= Y_POSITION:
+            mario_rect.bottom = Y_POSITION
+            jumping = False
+
+    # Handle user input
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_SPACE] and not jumping:
+        jumping = True
+        Y_VELOCITY = JUMP_HEIGHT
+
+    # Draw character
+    if jumping:
+        screen.blit(JUMPING_SURFACE, mario_rect)
+    else:
+        screen.blit(STANDING_SURFACE, mario_rect)
 
     scroll -= 5
 
