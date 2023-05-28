@@ -36,6 +36,7 @@ freq=250
 counter=0
 
 while run:
+    
 
     clock.tick(FPS)
     
@@ -62,6 +63,14 @@ while run:
         scroll = 0
 
     for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            run = False
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_UP:
+                print("up arrow")
+        if event.type==pygame.MOUSEBUTTONDOWN:
+            position=pygame.mouse.get_pos()
+            print("mouse clicked")
         if event.type == pygame.QUIT:
             run = False
 
