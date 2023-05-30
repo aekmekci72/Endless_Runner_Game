@@ -94,6 +94,8 @@ counter=0
 global pause
 pause=False
 
+scrollmin=5
+
 player = Player(50, SCREEN_HEIGHT - 65)
 player_group = pygame.sprite.Group()
 player_group.add(player)
@@ -143,14 +145,16 @@ while run:
             new_obstacle = Obstacle(SCREEN_WIDTH, SCREEN_HEIGHT - 50)
             obstacle_group.add(new_obstacle)
             counter=0
-            freq-=10
+            freq-=5
+            scrollmin+=0.05
 
         for obstacle in obstacle_group:
             obstacle.rect.x -= 5
         obstacle_group.draw(screen)
         player_group.update()
         player_group.draw(screen)
-        scroll -= 5
+        scroll -= scrollmin
+
         die = pygame.sprite.spritecollide(player, obstacle_group, False)
         if die:
             run = False
