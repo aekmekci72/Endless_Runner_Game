@@ -90,61 +90,81 @@ obstacle_group = pygame.sprite.Group()
 run = True
 freq=250
 counter=0
+global pause
+pause=False
 
 player = Player(50, SCREEN_HEIGHT - 65)
 player_group = pygame.sprite.Group()
 player_group.add(player)
-while run:
-    if player.is_jumping:
-        jumpcount+=1
-        if jumpcount<=7:
-            jumpon=0
-        elif jumpcount<=30:
-            jumpon=1
-        else:
-            jumpon=2
-    megacount+=1
-    if(megacount%5==0):
-        indexon+=1
-        if indexon==8:
-            indexon=0
-    
-    clock.tick(FPS)
-    
-    for i in range(0, tiles):
-        screen.blit(bg, (i * bg_width + scroll,0))
-        bg_rect.x = i * bg_width + scroll
-    counter+=1
-    if counter==freq:
-        new_obstacle = Obstacle(SCREEN_WIDTH, SCREEN_HEIGHT - 50)
-        obstacle_group.add(new_obstacle)
-        counter=0
-        freq-=5
-        freq-=10
 
-    for obstacle in obstacle_group:
-        obstacle.rect.x -= 5
-    obstacle_group.draw(screen)
-    player_group.update()
-    player_group.draw(screen)
-    scroll -= 5
-    die = pygame.sprite.spritecollide(player, obstacle_group, False)
-    if die:
-        run = False
-    if abs(scroll) > bg_width:
-        scroll = 0
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
+def paused():
+    global pause
+    while pause==True:
+        for event in pygame.event.get():
+
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_p:
+                    pause=False
+                    
+                        
+        pygame.display.update()
+        clock.tick(15)  
+
+while run:
+    if pause!=True:
+        if player.is_jumping:
+            jumpcount+=1
+            if jumpcount<=7:
+                jumpon=0
+            elif jumpcount<=30:
+                jumpon=1
+            else:
+                jumpon=2
+        megacount+=1
+        if(megacount%5==0):
+            indexon+=1
+            if indexon==8:
+                indexon=0
+        
+        clock.tick(FPS)
+        
+        for i in range(0, tiles):
+            screen.blit(bg, (i * bg_width + scroll,0))
+            bg_rect.x = i * bg_width + scroll
+        counter+=1
+        if counter==freq:
+            new_obstacle = Obstacle(SCREEN_WIDTH, SCREEN_HEIGHT - 50)
+            obstacle_group.add(new_obstacle)
+            counter=0
+            freq-=10
+
+        for obstacle in obstacle_group:
+            obstacle.rect.x -= 5
+        obstacle_group.draw(screen)
+        player_group.update()
+        player_group.draw(screen)
+        scroll -= 5
+        die = pygame.sprite.spritecollide(player, obstacle_group, False)
+        if die:
             run = False
-        elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_UP and not player.is_jumping: 
-                player.velocity_y = JUMP_FORCE
-                player.is_jumping = True
-                jumpcount=0
-        if event.type==pygame.MOUSEBUTTONDOWN:
-            position=pygame.mouse.get_pos()
-            print("mouse clicked")
-        if event.type == pygame.QUIT:
-            run = False
-    pygame.display.update()
+        if abs(scroll) > bg_width:
+            scroll = 0
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_UP and not player.is_jumping: 
+                    player.velocity_y = JUMP_FORCE
+                    player.is_jumping = True
+                    jumpcount=0
+                if event.key == pygame.K_p:
+                    pause=True
+                    paused()
+            if event.type==pygame.MOUSEBUTTONDOWN:
+                position=pygame.mouse.get_pos()
+                print("mouse clicked")
+        pygame.display.update()
 pygame.quit()
