@@ -87,6 +87,7 @@ class Player(pygame.sprite.Sprite):
         else:
             self.image = self.animlist[indexon]
 obstacle_group = pygame.sprite.Group()
+global run
 run = True
 freq=250
 counter=0
@@ -98,7 +99,7 @@ player_group = pygame.sprite.Group()
 player_group.add(player)
 
 def paused():
-    global pause
+    global pause, run
     while pause==True:
         for event in pygame.event.get():
 
@@ -107,6 +108,9 @@ def paused():
                 quit()
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_p:
+                    pause=False
+                if event.key == pygame.K_q:
+                    run=False
                     pause=False
                     
                         
@@ -163,6 +167,8 @@ while run:
                 if event.key == pygame.K_p:
                     pause=True
                     paused()
+                if event.key == pygame.K_q:
+                    run=False
             if event.type==pygame.MOUSEBUTTONDOWN:
                 position=pygame.mouse.get_pos()
                 print("mouse clicked")
