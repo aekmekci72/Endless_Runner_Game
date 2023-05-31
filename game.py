@@ -153,11 +153,9 @@ while run:
             new_obstacle = Obstacle(SCREEN_WIDTH, SCREEN_HEIGHT - 50)
             obstacle_group.add(new_obstacle)
             counter=0
-            freq-=5
-            scrollmin+=0.05
 
         for obstacle in obstacle_group:
-            obstacle.rect.x -= 5
+            obstacle.rect.x -= scrollmin
         obstacle_group.draw(screen)
         player_group.update()
         player_group.draw(screen)
@@ -189,6 +187,7 @@ while run:
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_RIGHT:
                     r=False
+                    scrollmin=5
             
 
             if event.type==pygame.MOUSEBUTTONDOWN:
@@ -197,8 +196,12 @@ while run:
 
         if r==True:
             if player.dash >=DASH_CONSUME_RATE:
-                    player.dash-=DASH_CONSUME_RATE
-                    dash_bar_width = player.dash / DASH_MAX * 100
+                player.dash-=DASH_CONSUME_RATE
+                dash_bar_width = player.dash / DASH_MAX * 100
+                scrollmin=10
+                counter+=1
+            else:
+                scrollmin=5
 
         dash_bar_width = player.dash / DASH_MAX * 100
         pygame.draw.rect(screen, (255,255,255), (50,20, 100,10))
