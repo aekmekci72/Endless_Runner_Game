@@ -8,6 +8,9 @@ SCREEN_WIDTH = 1500
 SCREEN_HEIGHT = 600
 GRAVITY = 0.6
 JUMP_FORCE = -15
+DASH_MAX = 100
+DASH_REGEN_RATE = 0.2
+DASH_CONSUME_RATE = 1
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Endless Scroll")
 bg = pygame.image.load("images/bg.png").convert()
@@ -26,6 +29,7 @@ indexon=0
 megacount=0
 jumpon=0
 jumpcount=0
+r=False
 
 class Obstacle(pygame.sprite.Sprite):
     def __init__(self, x, y):
@@ -67,6 +71,7 @@ class Player(pygame.sprite.Sprite):
         self.rect.y = y
         self.velocity_y = 0
         self.is_jumping = False
+        self.dash = DASH_MAX
 
     def update(self):
         self.velocity_y += GRAVITY
@@ -77,11 +82,14 @@ class Player(pygame.sprite.Sprite):
             self.velocity_y = 0
             self.is_jumping = False
             jumpcount=0
+        self.dash+=DASH_REGEN_RATE
+        if self.dash > DASH_MAX:
+            self.dash = DASH_MAX
+            
 
         die = pygame.sprite.spritecollide(self, obstacle_group, False)
         if die:
             run = False
-
         if self.is_jumping:
             self.image = self.jumplist[jumpon]
         else:
@@ -118,7 +126,7 @@ def paused():
                         
         pygame.display.update()
         clock.tick(15)  
-
+dash_bar_width = player.dash / DASH_MAX * 100
 while run:
     if pause!=True:
         if player.is_jumping:
@@ -160,10 +168,12 @@ while run:
             run = False
         if abs(scroll) > bg_width:
             scroll = 0
+
+        
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
-            elif event.type == pygame.KEYDOWN:
+            if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_UP and not player.is_jumping: 
                     player.velocity_y = JUMP_FORCE
                     player.is_jumping = True
@@ -173,8 +183,26 @@ while run:
                     paused()
                 if event.key == pygame.K_q:
                     run=False
+                if event.key == pygame.K_RIGHT:
+                    r=True
+
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_RIGHT:
+                    r=False
+            
+
             if event.type==pygame.MOUSEBUTTONDOWN:
                 position=pygame.mouse.get_pos()
                 print("mouse clicked")
+
+        if r==True:
+            if player.dash >=DASH_CONSUME_RATE:
+                    player.dash-=DASH_CONSUME_RATE
+                    dash_bar_width = player.dash / DASH_MAX * 100
+
+        dash_bar_width = player.dash / DASH_MAX * 100
+        pygame.draw.rect(screen, (255,255,255), (50,20, 100,10))
+        pygame.draw.rect(screen,(0,255,0),(50,20,(dash_bar_width),10))
+
         pygame.display.update()
 pygame.quit()
