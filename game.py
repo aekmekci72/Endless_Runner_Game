@@ -1,6 +1,7 @@
 import pygame
 import math
 import random
+
 pygame.init()
 clock = pygame.time.Clock()
 FPS = 60
@@ -16,6 +17,7 @@ pygame.display.set_caption("Endless Scroll")
 bg = pygame.image.load("images/bg.png").convert()
 bg_width = bg.get_width()
 bg_rect = bg.get_rect()
+score = 0
 
 
 spike1 = [pygame.image.load("images/spike1.png").convert_alpha(), 50,50]
@@ -153,13 +155,21 @@ while run:
             new_obstacle = Obstacle(SCREEN_WIDTH, SCREEN_HEIGHT - 50)
             obstacle_group.add(new_obstacle)
             counter=0
-
+    
+        last_obstacle_passed = None
         for obstacle in obstacle_group:
             obstacle.rect.x -= scrollmin
+            if player.rect.colliderect(obstacle.rect) and obstacle.rect.right < player.rect.left:
+                last_obstacle_passed = obstacle  # Update last_obstacle_passed
+
         obstacle_group.draw(screen)
         player_group.update()
         player_group.draw(screen)
         scroll -= scrollmin
+        
+        if last_obstacle_passed and player.is_jumping and last_obstacle_passed.rect.right < player.rect.left:
+            score += 1  # Increment score if player jumps over obstacle
+
 
         die = pygame.sprite.spritecollide(player, obstacle_group, False)
         if die:
@@ -208,6 +218,10 @@ while run:
         dash_bar_width = player.dash / DASH_MAX * 100
         pygame.draw.rect(screen, (255,255,255), (50,20, 100,10))
         pygame.draw.rect(screen,(0,255,0),(50,20,(dash_bar_width),10))
+        font = pygame.font.Font(None, 36)
+        score_text = font.render(f"Score: {score}", True, (255, 255, 255))
+        screen.blit(score_text, (10, 10))
+
 
         pygame.display.update()
 pygame.quit()
