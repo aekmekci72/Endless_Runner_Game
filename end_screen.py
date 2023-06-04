@@ -1,5 +1,6 @@
 import pygame
 import os
+import subprocess
 
 pygame.init()
 screen= pygame.display.set_mode()
@@ -43,7 +44,9 @@ while True:
         if event.type == pygame.MOUSEBUTTONDOWN:
             pos = pygame.mouse.get_pos()
             if ((pos[0]>535 and pos[0]<960) and (pos[1]>620 and pos[1]<685)):
-                pygame.quit()
+                subprocess.Popen("python intro.py")
+
+                
 
     scaled_splash = pygame.transform.smoothscale(scaled_splash, (width, height)) 
 
@@ -53,3 +56,4 @@ while True:
          
     pygame.display.update()
     clock.tick(60)
+pygame.quit()
