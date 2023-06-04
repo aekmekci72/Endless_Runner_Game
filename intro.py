@@ -13,8 +13,9 @@ pygame.display.set_caption("Mini-Game Hub")
 font = pygame.font.Font(None, 36)
 
 games = [
-    {"name": "Endless Runner", "path": "game.py"},
+    {"name": "Endless Runner", "path": "endless_runner.py"},
     {"name": "Tic Tac Toe", "path": "tic_tac_toe.py"},
+    {"name": "Space Invaders", "path": "space_invaders.py"},
 ]
 
 button_width = 200
