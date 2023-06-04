@@ -18,7 +18,7 @@ smallfont = pygame.font.SysFont('Arial',35)
 text = smallfont.render('S T A R T' , True , color)
 
 
-splash_page = pygame.image.load('images/graveyard.jpg')
+splash_page = pygame.image.load('images/dead.png')
 
 scaled_splash = pygame.transform.scale(splash_page, (800, 800))
 
@@ -31,9 +31,6 @@ def blit_alpha(target, source, location, opacity):
     temp.blit(source, (0, 0))
     temp.set_alpha(opacity)        
     target.blit(temp, location)
-
-text_splash = font1.render('You died...', False, 'white')
-text_splash1 = font1.render('Better luck next time!', False, 'white')
 counter=1
 
 
@@ -44,15 +41,14 @@ while True:
             exit()
         
         if event.type == pygame.MOUSEBUTTONDOWN:
-            pygame.quit()
+            pos = pygame.mouse.get_pos()
+            if ((pos[0]>535 and pos[0]<960) and (pos[1]>620 and pos[1]<685)):
+                pygame.quit()
 
     scaled_splash = pygame.transform.smoothscale(scaled_splash, (width, height)) 
 
-    screen.blit(text , (0,0))
-    position=pygame.mouse.get_pos()
     screen.blit(scaled_splash,(0,0))
-    screen.blit(text_splash, (60,70))
-    screen.blit(text_splash1, (60,180))
+    
 
          
     pygame.display.update()

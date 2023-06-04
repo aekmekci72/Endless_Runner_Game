@@ -1,6 +1,7 @@
 import pygame
 import math
 import random
+import os
 
 pygame.init()
 clock = pygame.time.Clock()
@@ -224,4 +225,5 @@ while run:
 
 
         pygame.display.update()
+os.system("python end_screen.py 1")
 pygame.quit()
