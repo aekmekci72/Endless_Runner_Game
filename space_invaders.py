@@ -174,7 +174,7 @@ def game(wave):
             r=random.randint(0,len(enemies)-1)
 
             circle_x = (enemies[r])["x"]
-            circle_y = (enemies[r])["cy"]
+            circle_y = (enemies[r])["y"]
             circles.append({"x": circle_x, "y": circle_y})
 
         for circle in circles:
