@@ -23,10 +23,10 @@ bg_rect = bg.get_rect()
 score = 0
 
 
-spike1 = [pygame.image.load("images/spike1.png").convert_alpha(), 50,50]
-spike3 = [pygame.image.load("images/spike3.png").convert_alpha(), 150, 50]
+obs1 = [pygame.image.load("images/pipe_bottom.png").convert_alpha(), 50,200]
+obs2 = [pygame.image.load("images/pipe_top.png").convert_alpha(), 50, 200]
 
-obslist=[spike1,spike3]
+obslist=[obs1,obs2]
 
 scroll = 0
 tiles = math.ceil(SCREEN_WIDTH  / bg_width) + 1
@@ -41,17 +41,26 @@ class Obstacle(pygame.sprite.Sprite):
         super().__init__()
         self.image = pygame.Surface((50, 50))
         self.image.fill((255, 0, 0))
-        r=random.randint(1,len(obslist))-1
-        self.image = pygame.transform.scale((obslist[r])[0], ((obslist[r])[1], (obslist[r])[2]))
-        self.rect = self.image.get_rect()
-        self.rect.x = x
-        self.rect.y = y
+        r=random.randint(0,len(obslist))
+        if r != len(obslist):
+            t=random.randint(200,350)
+            thing=obslist[r]
+            self.image = pygame.transform.scale(thing[0], ((50, t)))
+            self.rect = self.image.get_rect()
+            self.rect.x = x
+            if r==0:
+                self.rect.y=SCREEN_HEIGHT-t
+            elif r==1:
+                self.rect.y=0
+        else:
+            pass
 class Player(pygame.sprite.Sprite):
     def __init__(self, x, y):
         super().__init__()
-        self.f1 = pygame.transform.scale(pygame.image.load("images/flappy-1.png"), (48, 48))
-        self.f2 = pygame.transform.scale(pygame.image.load("images/flappy-2.png"), (48, 48))
-        self.animlist=[self.f1,self.f2]
+        self.f1 = pygame.transform.scale(pygame.image.load("images/bird_down.png"), (48, 48))
+        self.f2 = pygame.transform.scale(pygame.image.load("images/bird_mid.png"), (48, 48))
+        self.f3 = pygame.transform.scale(pygame.image.load("images/bird_up.png"), (48, 48))
+        self.animlist=[self.f1,self.f2,self.f3]
 
 
 
@@ -63,12 +72,14 @@ class Player(pygame.sprite.Sprite):
         self.dash = DASH_MAX
 
     def update(self):
+        global run
         self.velocity_y += GRAVITY
         self.rect.y += self.velocity_y
 
         if self.rect.y >= SCREEN_HEIGHT - 65:
-            self.rect.y = SCREEN_HEIGHT - 65
-            self.velocity_y = 0
+            run=False
+        if self.rect.y <=0:
+            run=False
         self.dash+=DASH_REGEN_RATE
         if self.dash > DASH_MAX:
             self.dash = DASH_MAX
@@ -88,7 +99,7 @@ pause=False
 
 scrollmin=5
 
-player = Player(50, SCREEN_HEIGHT - 65)
+player = Player(50, SCREEN_HEIGHT/2)
 player_group = pygame.sprite.Group()
 player_group.add(player)
 
@@ -115,9 +126,8 @@ while run:
     if pause!=True:
         megacount+=1
         if megacount%5==0:
-            if indexon==0:
-                indexon=1
-            else:
+            indexon+=1
+            if indexon==3:
                 indexon=0
         
         clock.tick(FPS)
