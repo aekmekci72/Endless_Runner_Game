@@ -15,7 +15,7 @@ background_color = (255, 255, 255)
 class Ball:
     def __init__(self):
         self.radius = 20
-        self.color = (255, 0, 0)  # Red
+        self.color = (255, 0, 0)  
         self.x = random.randint(self.radius, screen_width - self.radius)
         self.y = -self.radius
         self.velocity = 0
@@ -40,13 +40,17 @@ balls = []
 running = True
 clock = pygame.time.Clock()
 
+freq = 200
+
 while running:
+    r=random.randint(0,freq)
+    if r<5:
+        ball=Ball()
+        balls.append(ball)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
         elif event.type == pygame.MOUSEBUTTONDOWN:
-            ball = Ball()
-            balls.append(ball)
             mouse_pos = pygame.mouse.get_pos()
 
     screen.fill(background_color)
