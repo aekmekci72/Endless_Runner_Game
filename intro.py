@@ -18,6 +18,9 @@ games = [
     {"name": "Tic Tac Toe", "path": "tic_tac_toe.py"},
     {"name": "Space Invaders", "path": "space_invaders.py"},
     {"name": "Pong", "path": "pong.py"},
+    {"name": "Flappy Bird", "path": "flappy_bird.py"},
+    {"name": "Snake", "path": "snakeworking.py"},
+    {"name": "Clicker", "path": "clicker.py"}
 ]
 
 button_width = 200
@@ -71,6 +74,7 @@ while running:
         if event.type == pygame.QUIT:
             running = False
         elif event.type == pygame.MOUSEBUTTONDOWN:
+            freq+=1
             if event.button == 1:
                 mouse_pos = pygame.mouse.get_pos()
                 for game in games:
@@ -81,7 +85,6 @@ while running:
                         button_height
                     )
                     if button_rect.collidepoint(mouse_pos):
-                        print('clicked')
                         game_path = game['path']
                         subprocess.Popen(["python", game_path])
                         running = False
