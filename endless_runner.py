@@ -1,3 +1,9 @@
+#make score work
+#score=timer?
+#power ups
+#more obstacles
+
+
 import pygame
 import math
 import random

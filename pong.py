@@ -1,3 +1,8 @@
+# end 
+# q for quit
+
+
+
 import pygame as py
 
 py.init()

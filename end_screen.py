@@ -45,6 +45,9 @@ while True:
             pos = pygame.mouse.get_pos()
             if ((pos[0]>535 and pos[0]<960) and (pos[1]>620 and pos[1]<685)):
                 subprocess.Popen("python intro.py")
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_q:
+                break
 
                 
 

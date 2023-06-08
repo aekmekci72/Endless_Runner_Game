@@ -1,3 +1,5 @@
+#score, reset
+
 from random import randint
 import pygame, sys
 

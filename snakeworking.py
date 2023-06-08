@@ -1,3 +1,5 @@
+#apple thing
+
 import pygame as py, sys, random
 py.init()
 clock = py.time.Clock()

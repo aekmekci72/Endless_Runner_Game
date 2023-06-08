@@ -1,3 +1,5 @@
+#FOR ALL GAMES, PAUSE AND QUIT, LEADERBOARD, HIGH SCORE
+
 import random
 import pygame
 import os
@@ -19,8 +21,7 @@ games = [
     {"name": "Space Invaders", "path": "space_invaders.py"},
     {"name": "Pong", "path": "pong.py"},
     {"name": "Flappy Bird", "path": "flappy_bird.py"},
-    {"name": "Snake", "path": "snakeworking.py"},
-    {"name": "Clicker", "path": "clicker.py"}
+    
 ]
 
 button_width = 200
@@ -88,6 +89,9 @@ while running:
                         game_path = game['path']
                         subprocess.Popen(["python", game_path])
                         running = False
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_q:
+                running=False
 
     screen.fill(background_color)
 

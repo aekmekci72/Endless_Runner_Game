@@ -1,3 +1,8 @@
+#score
+#coins - boost score 
+#remove dash
+
+
 import pygame
 import math
 import random
