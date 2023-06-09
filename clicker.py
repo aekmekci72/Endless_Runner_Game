@@ -1,3 +1,5 @@
+#autoclicker, boosts
+
 import pygame as py, sys
 
 py.init()
@@ -70,7 +72,7 @@ window = py.display.set_mode(size=(w, h))
 font2 = py.font.Font("images/Neucha-Regular.ttf", 50)
 font = py.font.Font("images/Neucha-Regular.ttf", 30)
 
-background = py.image.load("images/bg1.jpg").convert()
+background = py.image.load("images/background.png").convert()
 
 game = Control()
 
