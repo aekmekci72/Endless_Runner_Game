@@ -18,7 +18,8 @@ py.display.set_caption("Pong Game")
 
 p_height = 150
 p_width=18
-w_score = 15
+global w_score
+w_score = 5
 
 
 class Ball:
@@ -52,7 +53,7 @@ class Ball:
     def display(self, win):
         py.draw.circle(win, self.c_gold, (self.x, self.y), self.r)
 
-    def getMaxSpeed():
+    def getMaxSpeed(self):
         return self.max_speed
 
 
@@ -134,13 +135,13 @@ class Paddle:
         self.x = self.original_x
         self.y = self.original_y
 
-    def getX():
+    def getX(self):
         return self.x
-    def getY():
+    def getY(self):
         self.y
-    def getW():
+    def getW(self):
         return self.w
-    def getH():
+    def getH(self):
         return self.h
 
 def p_move(arrow, rp, lp):
@@ -154,9 +155,11 @@ def p_move(arrow, rp, lp):
     if arrow[py.K_s] and lp.y + lp.speed + lp.h <= h:
         lp.update(dirup=False)
 
-
+global won 
+won = False
 
 def main():
+    global won, w_score
     clock = py.time.Clock()
     FPS = 60
 
@@ -196,7 +199,7 @@ def main():
         ball.update()
         interact(ball, rp, lp)
 
-        won = False
+        
         if lscore >= w_score:
             won = True
             win_text = "Congrats to Left Player!"
