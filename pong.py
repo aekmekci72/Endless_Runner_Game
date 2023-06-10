@@ -1,8 +1,9 @@
 # end 
 # q for quit
+#winniing restart
 
 
-
+import subprocess
 import pygame as py
 
 py.init()
@@ -181,9 +182,11 @@ def main():
         for i in py.event.get():
             if i.type == py.QUIT:
                 go = False
-                break
-            else:
-                continue
+            if i.type == py.KEYDOWN:
+                if event.key == py.K_q:
+                    subprocess.Popen("python end_screen.py")
+                    py.quit()
+
 
 
         if ball.x < 0:
