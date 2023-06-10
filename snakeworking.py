@@ -1,3 +1,4 @@
+import subprocess
 import pygame as py, sys, random
 py.init()
 clock = py.time.Clock()
@@ -53,16 +54,10 @@ class Snake:
         self.length.remove(self.start)
 
         if self.gameOver:
-            self.x, self.y = tile, tile
+            
+            subprocess.Popen("python end_screen.py")
+            py.quit()
 
-            self.length = [py.Rect(self.x - tile, self.y, tile, tile)]
-            self.start = py.Rect(self.x, self.y, tile, tile)
-
-            self.ydir = 0
-            self.xdir = 1
-
-            self.gameOver = False
-            food = Food()
 
         for i in self.length:
             if self.start.colliderect(i):
@@ -106,7 +101,10 @@ while playing:
 
         if event.type == py.KEYDOWN:
             if event.key == py.K_SPACE:
-                playing = False
+                
+                subprocess.Popen("python intro.py")
+                py.quit()
+
 
             if event.key == py.K_DOWN and snake1.ydir != -1:
                 snake1.ydir = 1
