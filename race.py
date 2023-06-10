@@ -1,3 +1,5 @@
+# add a restart feature, maybe add a feature where other cars can merge lanes (with an indicator to make game harder), better position you died message
+
 import random; import pygame as py; from pygame.locals import *
 
 clock = py.time.Clock()
@@ -109,7 +111,7 @@ while running==True:
         for x in (lane_coordinates[0]+45, lane_coordinates[1]+45):
             py.draw.rect(display, (255,255,255), (x, y+scroll_lane, dividerw, dividerh))
 
-    scroll_lane = scroll_lane+speed * 1.5    
+    scroll_lane = scroll_lane+speed * 2  
     
     f1 = py.font.Font("images/Neucha-Regular.ttf", 24)
     show = f1.render('Score: ' + str(score), True, (255, 255, 255))

@@ -23,6 +23,7 @@ games = [
     {"name": "Flappy Bird", "path": "flappy_bird.py"},
     {"name": "Clicker Simulator", "path": "clicker.py"},
     {"name": "Snake", "path": "snakeworking.py"},
+    {"name": "Car Race", "path": "race.py"},
     
 ]
 
