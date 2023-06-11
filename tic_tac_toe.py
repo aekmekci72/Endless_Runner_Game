@@ -1,5 +1,3 @@
-#score, reset
-
 from random import randint
 import pygame, sys
 
@@ -11,8 +9,13 @@ cell = windowSize // 3
 center_of_cell = pygame.math.Vector2(cell / 2)
 pygame.display.set_caption("Tic Tac Toe")
 
+global xscore, oscore
+
+xscore=0
+oscore=0
 
 class Tic_tac_toe:
+    global xscore, oscore
     def __init__(self, game):
         self.game = game
         self.font = pygame.font.Font('images/Neucha-Regular.ttf',cell//3)
@@ -56,7 +59,10 @@ class Tic_tac_toe:
         self.process()
 
     def start(self):
+        global xscore,oscore
         self.game.screen.blit(self.board, (0, 0))
+        l = self.font.render(("X: "+str(xscore) +"; O: "+str(oscore)), True, 'white', 'black')
+        self.game.screen.blit(l, (10, 10))
         self.showobj()
         self.showwinner()
     
@@ -75,6 +81,7 @@ class Tic_tac_toe:
                     self.game.screen.blit(display, pos)
     
     def showwinner(self):
+        global xscore,oscore
         if self.winner:
             if self.winner == 'tie':
                 label = self.font.render('No winner', True, 'white', 'black')
@@ -104,6 +111,7 @@ class Tic_tac_toe:
 
 
     def is_winner(self):
+        global xscore,oscore
         for i in self.array:
             x=[self.gameboard[i][j] for i, j in i]
             lsum = sum(x)
@@ -111,7 +119,10 @@ class Tic_tac_toe:
                 self.winner = 'XO'[lsum == 0]
                 self.winner_line = [pygame.math.Vector2(i[0][::-1]) * cell + center_of_cell,
                                     pygame.math.Vector2(i[2][::-1]) * cell + center_of_cell]
-            
+                if self.winner=="X":
+                    xscore+=1
+                if self.winner=="O":
+                    oscore+=1
         if self.steps == 9 and not self.winner:
             self.winner = 'tie'
 
@@ -143,6 +154,7 @@ class FinalGame:
 
     def runAgain(self):
         self.t = Tic_tac_toe(self)
+
 
 
 
