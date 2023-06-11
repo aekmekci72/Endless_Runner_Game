@@ -157,37 +157,35 @@ def p_move(arrow, rp, lp):
         lp.update(dirup=False)
 
 global won 
+global win_text
 won = False
 
 def main():
-    global won, w_score
+    global won, w_score, win_text
     clock = py.time.Clock()
     FPS = 60
 
-
     lp = Paddle(10, h//2 - p_height //2, p_height, p_width)
     ball = Ball(w // 2, h // 2, ball_r)
-
     rp = Paddle(w - 10 - p_width, h //2 - p_height//2, p_height, p_width)
     
     rscore = 0
-
     lscore = 0
 
     go = True
+    restart = False 
+
     while go:
         clock.tick(FPS)
-        update_display(window, ball, (lp, rp), rscore, lscore,)
+        update_display(window, ball, (lp, rp), rscore, lscore)
 
-        for i in py.event.get():
-            if i.type == py.QUIT:
+        for event in py.event.get():
+            if event.type == py.QUIT:
                 go = False
-            if i.type == py.KEYDOWN:
+            if event.type == py.KEYDOWN:
                 if event.key == py.K_q:
                     subprocess.Popen("python end_screen.py")
                     py.quit()
-
-
 
         if ball.x < 0:
             rscore += 1
@@ -202,7 +200,6 @@ def main():
         ball.update()
         interact(ball, rp, lp)
 
-        
         if lscore >= w_score:
             won = True
             win_text = "Congrats to Left Player!"
@@ -210,23 +207,29 @@ def main():
             won = True
             win_text = "Congrats to Right Player!"
 
-        if won==True:
-            white=(255, 255, 255)
+        if won:
+            window.fill((139, 196, 191)) 
+            white = (255, 255, 255)
             text = font.render(win_text, 1, white)
             window.blit(text, (w//2 - text.get_width() //2, h//2 - text.get_height()//2))
-            text2=font.render("Press space to restart", 1, white)
+            text2 = font.render("Press space to restart", 1, white)
             window.blit(text2, (w//2 - text2.get_width() //2, h//2 + text2.get_height()//2))
-            
             py.display.update()
+
             while True:
                 event = py.event.wait()
                 if event.type == py.KEYDOWN and event.key == py.K_SPACE:
-                    ball.restart()
-                    lp.reset()
-                    rp.reset()
-                    lscore = 0
-                    rscore = 0
+                    restart = True 
                     break
+
+        if restart:
+            ball.restart()
+            lp.reset()
+            rp.reset()
+            lscore = 0
+            rscore = 0
+            won = False  
+            restart = False  
 
     py.quit()
 
