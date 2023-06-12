@@ -15,6 +15,12 @@ pygame.display.set_caption("Mini-Game Hub")
 
 font = pygame.font.Font(None, 36)
 
+
+width = screen.get_width()
+height = screen.get_height()
+splash_page = pygame.image.load('images/games.png')
+scaled_splash = pygame.transform.scale(splash_page, (800, 800))
+
 games = [
     {"name": "Endless Runner", "path": "endless_runner.py"},
     {"name": "Tic Tac Toe", "path": "tic_tac_toe.py"},
@@ -81,17 +87,31 @@ while running:
             freq+=1
             if event.button == 1:
                 mouse_pos = pygame.mouse.get_pos()
-                for game in games:
-                    button_rect = pygame.Rect(
-                        (screen_width - button_width) // 2,
-                        button_start_y + games.index(game) * (button_height + button_padding),
-                        button_width,
-                        button_height
-                    )
-                    if button_rect.collidepoint(mouse_pos):
-                        game_path = game['path']
-                        subprocess.Popen(["python", game_path])
-                        running = False
+                print(mouse_pos)
+                if mouse_pos[0]>475 and mouse_pos[0]<860 and mouse_pos[1]>310 and mouse_pos[1]<415:
+                    subprocess.Popen("python endless_runner.py")
+                    pygame.quit()
+                if mouse_pos[0]>475 and mouse_pos[0]<860 and mouse_pos[1]>475 and mouse_pos[1]<575:
+                    subprocess.Popen("python tic_tac_toe.py")
+                    pygame.quit()
+                if mouse_pos[0]>475 and mouse_pos[0]<860 and mouse_pos[1]>645 and mouse_pos[1]<745:
+                    subprocess.Popen("python space_invaders.py") 
+                    pygame.quit()
+                if mouse_pos[0]>900 and mouse_pos[0]<1280 and mouse_pos[1]>125 and mouse_pos[1]<225:
+                    subprocess.Popen("python pong.py")
+                    
+                    pygame.quit()
+                if mouse_pos[0]>900 and mouse_pos[0]<1280 and mouse_pos[1]>390 and mouse_pos[1]<490:
+                    subprocess.Popen("python flappy_bird.py")
+                    pygame.quit()
+                if mouse_pos[0]>900 and mouse_pos[0]<1280 and mouse_pos[1]>520 and mouse_pos[1]<620:
+                    subprocess.Popen("python snakeworking.py")
+                    pygame.quit()
+                if mouse_pos[0]>900 and mouse_pos[0]<1280 and mouse_pos[1]>650 and mouse_pos[1]<750:
+                    subprocess.Popen("python race.py")
+                    pygame.quit()
+                
+                
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_q:
                 running=False
@@ -114,6 +134,10 @@ while running:
         text_surface = font.render(game["name"], True, text_color)
         text_rect = text_surface.get_rect(center=button_rect.center)
         screen.blit(text_surface, text_rect)
+
+    scaled_splash = pygame.transform.smoothscale(scaled_splash, (width, height))
+
+    screen.blit(scaled_splash, (0, 0))
 
     pygame.display.flip()
     clock.tick(60)
