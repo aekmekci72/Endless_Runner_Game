@@ -1,3 +1,7 @@
+#click multiplier
+#click assistant 
+#time warp
+
 import pygame as py
 import sys
 
