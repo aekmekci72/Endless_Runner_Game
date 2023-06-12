@@ -124,6 +124,7 @@ while run:
         megacount += 1
         if megacount % 5 == 0:
             indexon += 1
+            score+=1
             if indexon == 3:
                 indexon = 0
 
@@ -155,9 +156,6 @@ while run:
         player_group.update()
         player_group.draw(screen)
         scroll -= scrollmin
-
-        if last_obstacle_passed and player.is_jumping and last_obstacle_passed.rect.right < player.rect.left:
-            score += 1
 
         die = pygame.sprite.spritecollide(player, obstacle_group, False)
         if die:
@@ -200,8 +198,8 @@ while run:
                 freq = 250
 
         dash_bar_width = player.dash / DASH_MAX * 100
-        pygame.draw.rect(screen, (255, 255, 255), (50, 20, 100, 10))
-        pygame.draw.rect(screen, (0, 255, 0), (50, 20, dash_bar_width, 10))
+        pygame.draw.rect(screen, (255, 255, 255), (10, 50, 100, 10))
+        pygame.draw.rect(screen, (0, 255, 0), (10, 50, dash_bar_width, 10))
         font = pygame.font.Font(None, 36)
         score_text = font.render(f"Score: {score}", True, (255, 255, 255))
         screen.blit(score_text, (10, 10))
