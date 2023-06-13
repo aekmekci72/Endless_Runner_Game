@@ -25,24 +25,14 @@ scaled_splash = pygame.transform.scale(splash_page, (800, 800))
 leafFall = []
 for i in range(10):
     x = random.randrange(0, width)
-    y = random.randrange(0,height)
+    y = random.randrange(0, height)
     speed = random.randrange(10, 15)
-    direction = random.choice([-1, 1]) 
-    loop_height = random.randint(50, 150)  
-    leafFall.append([x, y, speed, direction, loop_height, False])
-
-
-def blit_alpha(target, source, location, opacity):
-    x = location[0]
-    y = location[1]
-    temp = pygame.Surface((source.get_width(), source.get_height())).convert()
-    temp.blit(target, (-x, -y))
-    temp.blit(source, (0, 0))
-    temp.set_alpha(opacity)
-    target.blit(temp, location)
-
+    fall_margin = random.randint(-100, 100)
+    orig = x
+    leafFall.append([x, y, speed, fall_margin, orig])
 
 counter = 1
+print(leafFall)
 
 while True:
     for event in pygame.event.get():
@@ -57,31 +47,26 @@ while True:
 
     screen.blit(scaled_splash, (0, 0))
 
-    for i in range(len(leafFall)-1,0,-1):
+    for i in range(len(leafFall) - 1, -1, -1):
         leaf = pygame.transform.scale(pygame.image.load("images/leaf.png"), (50, 50))
         screen.blit(leaf, (leafFall[i][0], leafFall[i][1]))
+    
+        leafFall[i][1] += leafFall[i][2]
+        leafFall[i][0] += leafFall[i][3]/5
+        leafFall[i][2]-=0.5
+        if not (leafFall[i][0] > leafFall[i][4] + leafFall[i][3] and  leafFall[i][0] < leafFall[i][4] - leafFall[i][3] or leafFall[i][0] < leafFall[i][4] + leafFall[i][3] and  leafFall[i][0] > leafFall[i][4] - leafFall[i][3]):
+            leafFall[i][3] *=-1
+            leafFall[i][2]=random.randrange(10,15)
 
-        leafFall[i][1] += leafFall[i][2]  
-
-        if not leafFall[i][5]:  
-            if leafFall[i][1] > leafFall[i][4]:
-                leafFall[i][0] += leafFall[i][3]  
-                leafFall[i][5] = True 
-        else:  
-            leafFall[i][0] += leafFall[i][3] 
-
-        if leafFall[i][1] > height:
-            leafFall.remove(leafFall[i])
-            x = random.randrange(0, width)
-            y = 0
-            speed = random.randrange(10, 15)
-            direction = random.choice([-1, 1]) 
-            loop_height = random.randint(50, 150)  
-            leafFall.append([x, y, speed, direction, loop_height, False])
-        elif leafFall[i][0] < 0 or leafFall[i][0] > width:
-            leafFall[i][3] *= -1  
+    if random.randint(0, 50) < 10:
+        x = random.randrange(0, width)
+        y = (0)
+        speed = random.randrange(10, 15)
+        fall_margin = random.randint(-100, 100)
+        orig = x
+        leafFall.append([x, y, speed, fall_margin, orig])
 
     pygame.display.update()
-    clock.tick(60)
+    clock.tick(250)
 
 pygame.quit()
