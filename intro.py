@@ -88,6 +88,7 @@ while running:
             if event.button == 1:
                 mouse_pos = pygame.mouse.get_pos()
                 print(mouse_pos)
+                print(mouse_pos)
                 if mouse_pos[0]>475 and mouse_pos[0]<860 and mouse_pos[1]>310 and mouse_pos[1]<415:
                     subprocess.Popen("python endless_runner.py")
                     pygame.quit()
@@ -99,10 +100,12 @@ while running:
                     pygame.quit()
                 if mouse_pos[0]>900 and mouse_pos[0]<1280 and mouse_pos[1]>125 and mouse_pos[1]<225:
                     subprocess.Popen("python pong.py")
-                    
+                    pygame.quit()
+                if mouse_pos[0]>900 and mouse_pos[0]<1280 and mouse_pos[1]>260 and mouse_pos[1]<360:
+                    subprocess.Popen("python flappy_bird.py")
                     pygame.quit()
                 if mouse_pos[0]>900 and mouse_pos[0]<1280 and mouse_pos[1]>390 and mouse_pos[1]<490:
-                    subprocess.Popen("python flappy_bird.py")
+                    subprocess.Popen("python clicker.py")
                     pygame.quit()
                 if mouse_pos[0]>900 and mouse_pos[0]<1280 and mouse_pos[1]>520 and mouse_pos[1]<620:
                     subprocess.Popen("python snakeworking.py")
