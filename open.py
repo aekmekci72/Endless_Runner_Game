@@ -42,6 +42,7 @@ while True:
 
         if event.type == pygame.MOUSEBUTTONDOWN:
             subprocess.Popen("python intro.py")
+            pygame.quit()
 
     scaled_splash = pygame.transform.smoothscale(scaled_splash, (width, height))
 
