@@ -1,6 +1,7 @@
 # add a restart feature, maybe add a feature where other cars can merge lanes (with an indicator to make game harder), better position you died message
 
 import random; import pygame as py; from pygame.locals import *
+import subprocess
 
 clock = py.time.Clock()
 
@@ -153,14 +154,8 @@ while running==True:
         showdeath.center = [player.rect.centerx, player.rect.top]
             
     if run:
-        display.blit(death, showdeath)
-        
-        py.draw.rect(display, ("#ED2939"), (0, 50, sw, 100))
-        
-        t1 = f1.render('Game over!', True, ("white"))
-        div2 = t1.get_rect()
-        div2.center = (sw / 2, 100)
-        display.blit(t1, div2)
+        subprocess.Popen("python end_screen.py")
+        py.quit()
     
     display.blit(show, div)
             

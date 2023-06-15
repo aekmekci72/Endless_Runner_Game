@@ -4,7 +4,7 @@ import subprocess
 
 pygame.init()
 screen= pygame.display.set_mode()
-pygame.display.set_caption('Sick or Swim')
+pygame.display.set_caption('Minigames')
 
 clock = pygame.time.Clock()
 font = pygame.font.Font('images/Neucha-Regular.ttf',60)

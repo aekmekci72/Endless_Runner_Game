@@ -1,8 +1,3 @@
-#score
-#coins - boost score 
-#remove dash
-
-
 import pygame
 import math
 import random
@@ -29,6 +24,8 @@ score = 0
 obs1 = [pygame.image.load("images/pipe_bottom.png").convert_alpha(), 50, 200]
 obs2 = [pygame.image.load("images/pipe_top.png").convert_alpha(), 50, 200]
 
+pausebutton = pygame.transform.scale(pygame.image.load("images/pause.png"), (150, 150))
+
 obslist = [obs1, obs2]
 
 scroll = 0
@@ -53,6 +50,15 @@ class Obstacle(pygame.sprite.Sprite):
         elif obstacle_type == 1:
             self.rect.y = 0
 
+class Coin(pygame.sprite.Sprite):
+    def __init__(self, x, y):
+        super().__init__()
+        self.image = pygame.image.load("images/coin.png").convert_alpha()
+        self.image = pygame.transform.scale(self.image, (50,50))
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+
 class Player(pygame.sprite.Sprite):
     def __init__(self, x, y):
         super().__init__()
@@ -67,6 +73,7 @@ class Player(pygame.sprite.Sprite):
         self.rect.y = y
         self.velocity_y = 0
         self.dash = DASH_MAX
+        self.money =0
 
     def update(self):
         global run
@@ -87,10 +94,14 @@ class Player(pygame.sprite.Sprite):
         self.image = self.animlist[indexon]
 
 obstacle_group = pygame.sprite.Group()
+coin_group = pygame.sprite.Group()
+
 global run
 run = True
 freq = 250
 counter = 0
+coin_counter = 0
+coin_freq = 400
 global pause
 pause = False
 
@@ -113,6 +124,18 @@ def paused():
                 if event.key == pygame.K_q:
                     run = False
                     pause = False
+        dash_bar_width = player.dash / DASH_MAX * 100
+        pygame.draw.rect(screen, (255, 255, 255), (10, 50, 100, 10))
+        pygame.draw.rect(screen, (0, 255, 0), (10, 50, dash_bar_width, 10))
+        font = pygame.font.Font(None, 36)
+        score_text = font.render(f"Score: {score}", True, (255, 255, 255))
+        screen.blit(score_text, (10, 10))
+
+        money_text = font.render(f"Money: {player.money}", True, (255, 255, 255))
+        screen.blit(money_text, (10, 70))
+
+        pause_text = font.render("Press 'P' to unpause", True, (255, 255, 255))
+        screen.blit(pause_text, (SCREEN_WIDTH-250, 10))
 
         pygame.display.update()
         clock.tick(15)
@@ -146,13 +169,26 @@ while run:
                 obstacle_group.add(new_obstacle)
             counter = 0
 
+        coin_counter += 1
+        if coin_counter >= coin_freq:
+            new_coin = Coin(SCREEN_WIDTH, random.randint(100, SCREEN_HEIGHT - 100))
+            coin_group.add(new_coin)
+            coin_counter = 0
+
         last_obstacle_passed = None
         for obstacle in obstacle_group:
             obstacle.rect.x -= scrollmin
             if player.rect.colliderect(obstacle.rect) and obstacle.rect.right < player.rect.left:
                 last_obstacle_passed = obstacle
 
+        for coin in coin_group:
+            coin.rect.x -= scrollmin
+            if player.rect.colliderect(coin.rect):
+                coin_group.remove(coin)
+                player.money+=1
+
         obstacle_group.draw(screen)
+        coin_group.draw(screen)
         player_group.update()
         player_group.draw(screen)
         scroll -= scrollmin
@@ -203,6 +239,12 @@ while run:
         font = pygame.font.Font(None, 36)
         score_text = font.render(f"Score: {score}", True, (255, 255, 255))
         screen.blit(score_text, (10, 10))
+
+        money_text = font.render(f"Money: {player.money}", True, (255, 255, 255))
+        screen.blit(money_text, (10, 70))
+
+        pause_text = font.render("Press 'P' to pause", True, (255, 255, 255))
+        screen.blit(pause_text, (SCREEN_WIDTH-250, 10))
 
         pygame.display.update()
 
