@@ -4,6 +4,7 @@
 
 import pygame as py
 import sys
+import subprocess
 
 py.init()
 clock = py.time.Clock()
@@ -70,6 +71,8 @@ class Control:
         if self.clickMultBtn.collidepoint(self.pos):
             if py.mouse.get_pressed()[0]:
                 self.buy_click_multiplier()
+        
+
 
     def upgrade(self):
         py.draw.rect(window, "#522920", self.upgradeBtn, border_radius=15)
@@ -141,6 +144,7 @@ font = py.font.Font("images/Neucha-Regular.ttf", 30)
 game = Control()
 
 heading = font2.render("Cookie Clicker", True, "white")
+instructions = font.render("Press 'q' to quit", True, "white")
 
 while True: 
     window.blit(background, (0,0))
@@ -150,10 +154,14 @@ while True:
         if i.type == py.QUIT:
             py.quit()
             sys.exit()
+        if i.type==py.KEYDOWN and i.key==py.K_q:
+            subprocess.Popen("python intro.py")
+            py.quit()
 
     
 
     window.blit(heading, (270, 50))
+    window.blit(instructions,( 10,10))
 
     game.run()
     py.display.update()
