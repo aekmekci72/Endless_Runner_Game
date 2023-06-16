@@ -21,7 +21,7 @@ class Food:
         self.rect = py.Rect(self.x, self.y, tile, tile)
 
     def draw(self):
-        py.draw.rect(window, "red", self.rect)
+        py.draw.rect(window, "orange", self.rect)
 
 
 class Snake:
@@ -138,9 +138,9 @@ while playing:
     snake1.move()
 
     showscore = score_font.render(f"{len(snake1.length)}", True, "white")
-    py.draw.rect(window, "green", snake1.start)
+    py.draw.rect(window, "red", snake1.start)
     for unit in snake1.length:
-        py.draw.rect(window, "green", unit)
+        py.draw.rect(window, "red", unit)
     window.blit(showscore, score_box)
 
     if snake1.start.colliderect(food.rect):
