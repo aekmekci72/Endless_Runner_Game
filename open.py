@@ -22,17 +22,8 @@ text = smallfont.render('S T A R T', True, color)
 splash_page = pygame.image.load('images/autumnarcade.png')
 scaled_splash = pygame.transform.scale(splash_page, (800, 800))
 
-leafFall = []
-for i in range(10):
-    x = random.randrange(0, width)
-    y = random.randrange(0, height)
-    speed = random.randrange(10, 15)
-    fall_margin = random.randint(-100, 100)
-    orig = x
-    leafFall.append([x, y, speed, fall_margin, orig])
 
 counter = 1
-print(leafFall)
 
 while True:
     for event in pygame.event.get():
@@ -48,24 +39,6 @@ while True:
 
     screen.blit(scaled_splash, (0, 0))
 
-    for i in range(len(leafFall) - 1, -1, -1):
-        leaf = pygame.transform.scale(pygame.image.load("images/leaf.png"), (50, 50))
-        screen.blit(leaf, (leafFall[i][0], leafFall[i][1]))
-    
-        leafFall[i][1] += leafFall[i][2]
-        leafFall[i][0] += leafFall[i][3]/5
-        leafFall[i][2]-=0.5
-        if not (leafFall[i][0] > leafFall[i][4] + leafFall[i][3] and  leafFall[i][0] < leafFall[i][4] - leafFall[i][3] or leafFall[i][0] < leafFall[i][4] + leafFall[i][3] and  leafFall[i][0] > leafFall[i][4] - leafFall[i][3]):
-            leafFall[i][3] *=-1
-            leafFall[i][2]=random.randrange(10,15)
-
-    if random.randint(0, 50) < 10:
-        x = random.randrange(0, width)
-        y = (0)
-        speed = random.randrange(10, 15)
-        fall_margin = random.randint(-100, 100)
-        orig = x
-        leafFall.append([x, y, speed, fall_margin, orig])
 
     pygame.display.update()
     clock.tick(250)
