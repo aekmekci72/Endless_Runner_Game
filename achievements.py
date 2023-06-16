@@ -30,11 +30,18 @@ achievements = [
     {"name": "Clicking Maestro (1000000 clicks in Sweater Weather Treats)", "achieved": True},
     {"name": "Reptilian Ruler (25 apples in Pumpkin Python)", "achieved": False},
     {"name": "Speed Demon (50 points in Fall Fury)", "achieved": True},
-    {"name": "Money Master (click to buy for 250 coins)", "achieved": False}
+    {"name": "Money Master (have >=250 coins)", "achieved": False}
 ]
 
-achieved_color = (0, 128, 0)  
-unachieved_color = (128, 128, 128) 
+achieved_color = (0, 128, 0)
+unachieved_color = (128, 128, 128)
+with open("money.txt") as f:
+    contents = f.readlines()
+money=""
+for thing in contents:
+    money+=thing
+money=int(money)
+
 
 while running:
     for event in pygame.event.get():
@@ -43,27 +50,21 @@ while running:
         elif event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 1:
                 mouse_pos = pygame.mouse.get_pos()
-                print(mouse_pos)
                 if (
-                    mouse_pos[0] > 230
-                    and mouse_pos[0] < 440
-                    and mouse_pos[1] > 365
-                    and mouse_pos[1] < 460
+                    mouse_pos[0] > 750
+                    and mouse_pos[0] < 950
+                    and mouse_pos[1] > 200
+                    and mouse_pos[1] < 230
                 ):
-                    subprocess.Popen("python intro.py")
-                    pygame.quit()
+                    if not achievements[6]["achieved"] and money >= 250:
+                        achievements[6]["achieved"] = True
+                        money -= 250
 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_q:
                 running = False
 
-    with open("money.txt") as f:
-        contents = f.readlines()
-    c = ""
-    for thing in contents:
-        c += thing
-
-    txt = font.render("Money: " + c, 1, (0, 0, 0))
+    txt = font.render("Money: " + str(money), 1, (0, 0, 0))
 
     scaled_splash = pygame.transform.smoothscale(scaled_splash, (width, height))
 
@@ -71,14 +72,21 @@ while running:
 
     screen.blit(txt, (10, 10))
 
-    y = 200  
-    for achievement in achievements:
+    y = 200
+    for index, achievement in enumerate(achievements):
         name = achievement["name"]
         achieved = achievement["achieved"]
         color = achieved_color if achieved else unachieved_color
         txt_achieve = font2.render(name, 1, color)
         screen.blit(txt_achieve, (750, y))
-        y += 80  
+        
+        if index == 6 and not achieved:
+            if money >= 250:
+                (achievements[6])["achieved"]=True
+            else:
+                (achievements[6])["achieved"]=False
+                
+        y += 80
 
     pygame.display.flip()
     clock.tick(60)
