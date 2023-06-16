@@ -61,11 +61,11 @@ showdeath = death.get_rect()
 
 while running==True:
     
-    display.fill(("#99EDC3")) #grass
+    display.fill(("#AA4A44")) #grass
         
     #edges
-    py.draw.rect(display, ("#74B72E"), edge_r)
-    py.draw.rect(display, ("#74B72E"), edge_l)
+    py.draw.rect(display, ("#ffa500"), edge_r)
+    py.draw.rect(display, ("#ffa500"), edge_l)
 
     py.draw.rect(display, (100, 100, 100), path) #road
 
