@@ -85,7 +85,7 @@ class Control:
             self.auto_clicker_description = self.font.render(f"Buy Autoclicker", True, "#eee0b1")
             self.auto_clicker_c = self.font.render(f"({self.auto_clicker_cost} cookies)", True, "#eee0b1")
             s=self.auto_clicker_cps+1+self.num_autoclicker
-            self.auto_clicker_update = self.font.render(f"{int(self.auto_clicker_cps)} -> {s} cps)", True, "#eee0b1")
+            self.auto_clicker_update = self.font.render(f"0 -> {s} cps)", True, "#eee0b1")
             window.blit(self.auto_clicker_description, (725, 165))
             window.blit(self.auto_clicker_c, (725, 195))
             window.blit(self.auto_clicker_update, (725, 225))
@@ -115,7 +115,7 @@ class Control:
         py.draw.rect(window, "#522920", self.clickMultBtn, border_radius=15)
         self.clickmult_description = self.font.render(f"Buy Click Multiplier", True, "#eee0b1")
         self.clickmult_c = self.font.render(f"({self.click_multipliercost} cookies)", True, "#eee0b1")
-        self.clickmult_update = self.font.render(f"{int(self.click_multipliers)} -> {self.click_multipliers+0.25} cps)", True, "#eee0b1")
+        self.clickmult_update = self.font.render(f"{int(self.click_multipliers)}x -> {self.click_multipliers+0.25}x)", True, "#eee0b1")
         window.blit(self.clickmult_description, (725, 315))
         window.blit(self.clickmult_c, (725, 345))
         window.blit(self.clickmult_update, (725, 375))
