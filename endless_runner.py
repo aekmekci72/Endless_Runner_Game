@@ -23,7 +23,8 @@ DASH_REGEN_RATE = 0.2
 DASH_CONSUME_RATE = 1
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Endless Runner Game")
-bg = pygame.image.load("images/bg.png").convert()
+bg = pygame.image.load("images/autumnscroll.jpg").convert_alpha()
+bg=pygame.transform.scale(bg, (SCREEN_WIDTH, SCREEN_HEIGHT))
 bg_width = bg.get_width()
 bg_rect = bg.get_rect()
 score = 0
@@ -147,16 +148,16 @@ def paused():
                     run=False
                     pause=False
         dash_bar_width = player.dash / DASH_MAX * 100
-        pygame.draw.rect(screen, (255, 255, 255), (10, 50, 100, 10))
+        pygame.draw.rect(screen, (0, 0, 0), (10, 50, 100, 10))
         pygame.draw.rect(screen, (0, 255, 0), (10, 50, dash_bar_width, 10))
         font = pygame.font.Font(None, 36)
-        score_text = font.render(f"Score: {score}", True, (255, 255, 255))
+        score_text = font.render(f"Score: {score}", True, (0, 0, 0))
         screen.blit(score_text, (10, 10))
 
-        money_text = font.render(f"Money: {player.money}", True, (255, 255, 255))
+        money_text = font.render(f"Money: {player.money}", True, (0, 0, 0))
         screen.blit(money_text, (10, 70))
 
-        pause_text = font.render("Press 'P' to unpause", True, (255, 255, 255))
+        pause_text = font.render("Press 'P' to unpause", True, (0, 0, 0))
         screen.blit(pause_text, (SCREEN_WIDTH-250, 10))
                         
         pygame.display.update()
@@ -192,7 +193,7 @@ while run:
             
         coin_counter += 1
         if coin_counter >= coin_freq:
-            new_coin = Coin(SCREEN_WIDTH, random.randint(SCREEN_HEIGHT-100,SCREEN_HEIGHT))
+            new_coin = Coin(SCREEN_WIDTH, random.randint(SCREEN_HEIGHT-150,SCREEN_HEIGHT-50))
             coin_group.add(new_coin)
             coin_counter = 0
 
@@ -260,16 +261,16 @@ while run:
                 freq=250
 
         dash_bar_width = player.dash / DASH_MAX * 100
-        pygame.draw.rect(screen, (255, 255, 255), (10, 50, 100, 10))
+        pygame.draw.rect(screen, (0, 0, 0), (10, 50, 100, 10))
         pygame.draw.rect(screen, (0, 255, 0), (10, 50, dash_bar_width, 10))
         font = pygame.font.Font(None, 36)
-        score_text = font.render(f"Score: {score}", True, (255, 255, 255))
+        score_text = font.render(f"Score: {score}", True, (0, 0, 0))
         screen.blit(score_text, (10, 10))
 
-        money_text = font.render(f"Money: {player.money}", True, (255, 255, 255))
+        money_text = font.render(f"Money: {player.money}", True, (0, 0, 0))
         screen.blit(money_text, (10, 70))
 
-        pause_text = font.render("Press 'P' to pause", True, (255, 255, 255))
+        pause_text = font.render("Press 'P' to pause", True, (0, 0, 0))
         screen.blit(pause_text, (SCREEN_WIDTH-250, 10))
 
 
