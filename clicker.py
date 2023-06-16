@@ -3,11 +3,26 @@
 #time warp
 
 import pygame as py
-import sys
+import sys, random
 import subprocess
 
 py.init()
 clock = py.time.Clock()
+
+class Coin:
+    def __init__(self, x, y, value):
+        self.x = x
+        self.y = y
+        self.value = value
+        self.radius = 10
+        self.color = (255, 215, 0) # gold color
+        self.speed = random.randint(2, 5)  
+
+    def draw(self, surface):
+        py.draw.circle(surface, self.color, (self.x, self.y), self.radius)
+
+    def move(self):
+        self.y += self.speed / 2
 
 class Control:
     def __init__(self):
@@ -16,6 +31,10 @@ class Control:
         self.upgrade1_cost = 5
         self.isClicked = False
         self.color = "#9D7E67"
+
+        self.coins = []
+        self.last_coin_spawned_time = 0
+        self.money=0
 
         self.circle = py.Rect(400-150,300-150,300,300)
         self.upgradeBtn =  py.Rect(710, 50, 185, 75)
@@ -38,7 +57,39 @@ class Control:
         self.upgrade()
         self.auto_clicker()
         self.click_multiplier()
+        
+        self.spawn_coin()
+        self.update_coins()
+        self.show_money()
 
+    def spawn_coin(self):
+        current_time = py.time.get_ticks()
+        if current_time - self.last_coin_spawned_time >= 3000:  # spawn every 3 seconds
+            x = random.randint(50, w-50)
+            y = -50
+            value = random.randint(1, 5)
+            coin = Coin(x, y, value)
+
+            coin.draw(window)
+            self.coins.append(coin)
+            self.last_coin_spawned_time = current_time
+
+
+    def update_coins(self):
+        for coin in self.coins:
+            coin.move()
+            coin.draw(window)
+            if coin.y >= h-50: # if the coin hits the bottom of the screen
+                self.coins.remove(coin)
+            elif py.mouse.get_pressed()[0] and py.Rect(coin.x-coin.radius, coin.y-coin.radius, coin.radius*2, coin.radius*2).collidepoint(py.mouse.get_pos()):
+                self.money += coin.value
+                self.coins.remove(coin)
+    def show_money(self):
+        font = py.font.SysFont("comicsansms", 20)
+        text = font.render("Money: " + str(self.money), True, (255, 255, 255))
+        window.blit(text, (10, 50))
+
+        
     def counter(self):
         x=str([self.num_of_cookies])
         self.cookiecount = font2.render("Cookies: "+x, True, "white")
@@ -162,6 +213,7 @@ while True:
 
     window.blit(heading, (270, 50))
     window.blit(instructions,( 10,10))
+
 
     game.run()
     py.display.update()
