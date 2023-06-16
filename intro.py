@@ -13,7 +13,7 @@ screen_height = pygame.display.Info().current_h
 screen = pygame.display.set_mode((screen_width, screen_height), pygame.FULLSCREEN)
 pygame.display.set_caption("Mini-Game Hub")
 
-font = pygame.font.Font(None, 36)
+font = pygame.font.Font(None, 60)
 
 
 width = screen.get_width()
@@ -21,50 +21,22 @@ height = screen.get_height()
 splash_page = pygame.image.load('images/games.png')
 scaled_splash = pygame.transform.scale(splash_page, (800, 800))
 
-class Ball:
-    def __init__(self):
-        self.radius = 20
-        self.color = (255, 0, 0)  
-        self.x = random.randint(self.radius, screen_width - self.radius)
-        self.y = -self.radius
-        self.velocity = 0
-        self.gravity = 0.5
-
-    def update(self):
-        self.y += self.velocity
-        self.velocity += self.gravity
-
-        if self.y + self.radius >= screen_height:
-            self.y = screen_height - self.radius
-            self.velocity *= -0.8
-
-            if abs(self.velocity) < 5:
-                self.y=screen_height-15
-
-    def draw(self):
-        pygame.draw.circle(screen, self.color, (self.x, int(self.y)), self.radius)
-
-balls=[]
 
 running = True
 
 clock = pygame.time.Clock()
 
-freq=200
-
-
 while running:
-    r=random.randint(0,freq)
-    if r<5:
-        ball=Ball()
-        balls.append(ball)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
         elif event.type == pygame.MOUSEBUTTONDOWN:
-            freq+=1
             if event.button == 1:
                 mouse_pos = pygame.mouse.get_pos()
+                print(mouse_pos)
+                if mouse_pos[0]>230 and mouse_pos[0]<440 and mouse_pos[1]>365 and mouse_pos[1]<460:
+                    subprocess.Popen("python achievements.py")
+                    pygame.quit()
                 if mouse_pos[0]>490 and mouse_pos[0]<850 and mouse_pos[1]>305 and mouse_pos[1]<400:
                     subprocess.Popen("python endless_runner.py")
                     pygame.quit()
@@ -94,11 +66,20 @@ while running:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_q:
                 running=False
-
+    with open("money.txt") as f:
+        contents = f.readlines()
+    c=""
+    for thing in contents:
+        c+=thing
     
+    txt = font.render("Money: "+c, 1, (0,0,0))
+    
+
     scaled_splash = pygame.transform.smoothscale(scaled_splash, (width, height))
 
     screen.blit(scaled_splash, (0, 0))
+
+    screen.blit(txt, (10,10))
 
     pygame.display.flip()
     clock.tick(60)

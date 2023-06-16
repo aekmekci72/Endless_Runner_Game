@@ -22,6 +22,8 @@ text = smallfont.render('S T A R T', True, color)
 splash_page = pygame.image.load('images/autumnarcade.png')
 scaled_splash = pygame.transform.scale(splash_page, (800, 800))
 
+with open('money.txt', 'w') as f:
+    f.write('0')
 
 counter = 1
 
