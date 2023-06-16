@@ -89,11 +89,11 @@ def interact(ball, right_paddle, left_paddle):
 
 
 def update_display(screen, ball, paddles, rscore, lscore):
-    bgcolor =(139,196,191)
+    bgcolor =(255,165,0)
     screen.fill(bgcolor)
     
-    rtext = font.render(f"{rscore}", 1, (21,71,52))
-    ltext = font.render(f"{lscore}", 1, (21,71,52))
+    rtext = font.render(f"{rscore}", 1, (225,225,225))
+    ltext = font.render(f"{lscore}", 1, (225,225,225))
     screen.blit(ltext, (w//4 - ltext.get_width()//2, 20))
     screen.blit(rtext, (w * (3/4) -rtext.get_width()//2, 20))
 
@@ -184,7 +184,7 @@ def main():
                 go = False
             if event.type == py.KEYDOWN:
                 if event.key == py.K_q:
-                    subprocess.Popen("python end_screen.py")
+                    subprocess.Popen("python intro.py")
                     py.quit()
 
         if ball.x < 0:
@@ -208,11 +208,11 @@ def main():
             win_text = "Congrats to Right Player!"
 
         if won:
-            window.fill((139, 196, 191)) 
+            window.fill((225, 165, 0)) 
             white = (255, 255, 255)
             text = font.render(win_text, 1, white)
             window.blit(text, (w//2 - text.get_width() //2, h//2 - text.get_height()//2))
-            text2 = font.render("Press space to restart", 1, white)
+            text2 = font.render("Press space to restart, q to quit", 1, white)
             window.blit(text2, (w//2 - text2.get_width() //2, h//2 + text2.get_height()//2))
             py.display.update()
 
@@ -221,6 +221,9 @@ def main():
                 if event.type == py.KEYDOWN and event.key == py.K_SPACE:
                     restart = True 
                     break
+                if event.type == py.KEYDOWN and event.key == py.K_q:
+                    subprocess.Popen("python intro.py")
+                    py.quit()
 
         if restart:
             ball.restart()
