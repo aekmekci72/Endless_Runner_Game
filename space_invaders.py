@@ -28,6 +28,7 @@ score = 0
 def game(wave):
     global score
     global bullet_state
+    wv=w-4
     player_width = 64
     player_height = 64
     player_x = (screen_width - player_width) // 2
@@ -75,9 +76,11 @@ def game(wave):
     def draw_score():
         score_text = score_font.render("Score: " + str(score), True, (255, 255, 255))
         screen.blit(score_text, (10, 10))
+        wave_text = score_font.render("Wave: " + str(wv), True, (255, 255, 255))
+        screen.blit(wave_text, (10, 40))
 
     right = False
-    left = False
+    left = False  
 
     while running:
         for event in pygame.event.get():

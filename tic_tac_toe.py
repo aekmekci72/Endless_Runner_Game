@@ -1,5 +1,5 @@
 from random import randint
-import pygame, sys
+import pygame, sys, subprocess
 
 windowSize = 800
 
@@ -28,7 +28,7 @@ class Tic_tac_toe:
         self.winner = None
     
     def setImages(self):
-        self.board = self.get_scaled_image(path='images/board.jpg', res=[windowSize] * 2)
+        self.board = self.get_scaled_image(path='images/board.png', res=[windowSize] * 2)
         self.x = self.get_scaled_image(path='images/x.png', res=[cell] * 2)
         self.o = self.get_scaled_image(path='images/o.png', res=[cell] * 2)
 
@@ -88,12 +88,16 @@ class Tic_tac_toe:
                 self.game.screen.blit(label, (windowSize // 2 - label.get_width() // 2, windowSize // 4))
                 label2 = self.font.render('Press space to restart', True, 'white', 'black')
                 self.game.screen.blit(label2, (windowSize // 2 - label2.get_width() // 2, windowSize // 2))
+                label3 = self.font.render('Press q to quit', True, 'white', 'gold')
+                self.game.screen.blit(label3, (windowSize // 2 - label2.get_width() // 2, windowSize // 2 +100))
             else:
                 pygame.draw.line(self.game.screen, 'gold', *self.winner_line, cell // 8)
                 label = self.font.render(f'Player "{self.winner}" wins!', True, 'white', 'gold')
                 self.game.screen.blit(label, (windowSize // 3 - label.get_width() // 3, windowSize // 4))
                 label2 = self.font.render('Press space to restart', True, 'white', 'gold')
                 self.game.screen.blit(label2, (windowSize // 2 - label2.get_width() // 2, windowSize // 2))
+                label3 = self.font.render('Press q to quit', True, 'white', 'gold')
+                self.game.screen.blit(label3, (windowSize // 2 - label2.get_width() // 2, windowSize // 2 +100))
         else:
             pass
 
@@ -150,6 +154,9 @@ class FinalGame:
             if e.type == pygame.KEYDOWN:
                 if e.key == pygame.K_SPACE:
                     self.runAgain()
+                if e.key == pygame.K_q:
+                    subprocess.Popen("python intro.py")
+                    pygame.quit()
 
 
     def runAgain(self):
