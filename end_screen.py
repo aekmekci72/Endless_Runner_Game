@@ -43,6 +43,7 @@ while True:
         
         if event.type == pygame.MOUSEBUTTONDOWN:
             subprocess.Popen("python intro.py")
+            pygame.quit()
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_q:
                 break
