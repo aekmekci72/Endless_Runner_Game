@@ -33,9 +33,11 @@ while running:
         elif event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 1:
                 mouse_pos = pygame.mouse.get_pos()
-                print(mouse_pos)
                 if mouse_pos[0]>230 and mouse_pos[0]<440 and mouse_pos[1]>365 and mouse_pos[1]<460:
                     subprocess.Popen("python achievements.py")
+                    pygame.quit()
+                if mouse_pos[0]>230 and mouse_pos[0]<440 and mouse_pos[1]>475 and mouse_pos[1]<565:
+                    subprocess.Popen("python highscores.py")
                     pygame.quit()
                 if mouse_pos[0]>490 and mouse_pos[0]<850 and mouse_pos[1]>305 and mouse_pos[1]<400:
                     subprocess.Popen("python endless_runner.py")
