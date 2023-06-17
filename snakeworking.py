@@ -54,7 +54,17 @@ class Snake:
         self.length.remove(self.start)
 
         if self.gameOver:
-            
+            with open("highscores.txt") as z:
+                c = z.readlines()
+            for g in c:
+                x=c.index(g)
+                c[x]=g.strip()
+            x=(c[6])
+            if int(x) < len(self.length):
+                c[6] = str(len(self.length))
+            with open('highscores.txt', 'w') as y:
+                for t in c:
+                    y.write(str(t)+"\n")
             subprocess.Popen("python end_screen.py")
             py.quit()
 

@@ -154,6 +154,17 @@ while running==True:
         showdeath.center = [player.rect.centerx, player.rect.top]
             
     if run:
+        with open("highscores.txt") as z:
+            c = z.readlines()
+        for g in c:
+            x=c.index(g)
+            c[x]=g.strip()
+        x=(c[7])
+        if int(x) < score:
+            c[7] = str(score)
+        with open('highscores.txt', 'w') as y:
+            for t in c:
+                y.write(str(t)+"\n")
         subprocess.Popen("python end_screen.py")
         py.quit()
     

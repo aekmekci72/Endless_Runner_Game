@@ -206,6 +206,17 @@ while True:
             py.quit()
             sys.exit()
         if i.type==py.KEYDOWN and i.key==py.K_q:
+            with open("highscores.txt") as z:
+                c = z.readlines()
+            for g in c:
+                x=c.index(g)
+                c[x]=g.strip()
+            x=(c[5])
+            if int(x) < game.num_of_cookies:
+                c[5] = str(game.num_of_cookies)
+            with open('highscores.txt', 'w') as y:
+                for t in c:
+                    y.write(str(t)+"\n")
             subprocess.Popen("python intro.py")
             py.quit()
 
