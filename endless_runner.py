@@ -275,5 +275,29 @@ while run:
 
 
         pygame.display.update()
+
+with open("money.txt") as f:
+    contents = f.readlines()
+money=""
+for thing in contents:
+    money+=thing
+money=int(money)
+money+=player.money
+
+with open('money.txt', 'w') as h:
+    h.write(str(money))
+
+with open("highscores.txt") as z:
+    c = z.readlines()
+for g in c:
+    x=c.index(g)
+    c[x]=g.strip()
+x=(c[0])
+if int(x) < score:
+    c[0] = str(score)
+with open('highscores.txt', 'w') as y:
+    for t in c:
+        y.write(str(t)+"\n")
+
 subprocess.Popen("python end_screen.py")
 pygame.quit()

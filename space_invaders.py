@@ -165,6 +165,19 @@ def game(wave):
                 and player_y < circle_y + bullet_height
                 and player_y + player_height > circle_y
             ):
+
+
+                with open("highscores.txt") as z:
+                    c = z.readlines()
+                for g in c:
+                    x=c.index(g)
+                    c[x]=g.strip()
+                x=(c[2])
+                if int(x) < score:
+                    c[2] = str(score)
+                with open('highscores.txt', 'w') as y:
+                    for t in c:
+                        y.write(str(t)+"\n")
                 subprocess.Popen("python end_screen.py")
                 pygame.quit()
 
@@ -196,3 +209,5 @@ def game(wave):
 while True:
     game(w)
     w += 1
+
+

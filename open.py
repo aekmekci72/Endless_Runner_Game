@@ -25,6 +25,10 @@ scaled_splash = pygame.transform.scale(splash_page, (800, 800))
 with open('money.txt', 'w') as f:
     f.write('0')
 
+with open('highscores.txt', 'w') as h:
+    h.write('0\n0\n0\n0\n0\n0\n0\n0')
+    
+
 counter = 1
 
 while True:

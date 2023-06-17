@@ -26,10 +26,10 @@ clock = pygame.time.Clock()
 achievements = [
     {"name": "Road Runner (500 points in Maple Rush)", "achieved": False},
     {"name": "Cosmic Annihilator (500 points in Galactic Gourds)", "achieved": False},
-    {"name": "Winged Wonder (250 points in Acorn Ascend)", "achieved": True},
-    {"name": "Clicking Maestro (1000000 clicks in Sweater Weather Treats)", "achieved": True},
+    {"name": "Winged Wonder (250 points in Acorn Ascend)", "achieved": False},
+    {"name": "Clicking Maestro (1000000 clicks in Sweater Weather Treats)", "achieved": False},
     {"name": "Reptilian Ruler (25 apples in Pumpkin Python)", "achieved": False},
-    {"name": "Speed Demon (50 points in Fall Fury)", "achieved": True},
+    {"name": "Speed Demon (50 points in Fall Fury)", "achieved": False},
     {"name": "Money Master (have >=250 coins)", "achieved": False}
 ]
 

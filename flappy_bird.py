@@ -9,7 +9,7 @@ clock = pygame.time.Clock()
 FPS = 60
 SCREEN_WIDTH = 1500
 SCREEN_HEIGHT = 600
-GRAVITY = 0.6
+GRAVITY = 0.8
 JUMP_FORCE = -15
 DASH_MAX = 100
 DASH_REGEN_RATE = 0.2
@@ -222,7 +222,6 @@ while run:
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 position = pygame.mouse.get_pos()
-                print("mouse clicked")
 
         if r == True:
             if player.dash >= DASH_CONSUME_RATE:
@@ -248,6 +247,30 @@ while run:
         screen.blit(pause_text, (SCREEN_WIDTH-250, 10))
 
         pygame.display.update()
+
+with open("money.txt") as f:
+    contents = f.readlines()
+money=""
+for thing in contents:
+    money+=thing
+money=int(money)
+money+=player.money
+
+with open('money.txt', 'w') as h:
+    h.write(str(money))
+
+with open("highscores.txt") as z:
+    c = z.readlines()
+for g in c:
+    x=c.index(g)
+    c[x]=g.strip()
+print(c)
+x=(c[4])
+if int(x) < score:
+    c[4] = str(score)
+with open('highscores.txt', 'w') as y:
+    for t in c:
+        y.write(str(t)+"\n")
 
 subprocess.Popen("python end_screen.py")
 pygame.quit()
