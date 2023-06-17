@@ -48,6 +48,7 @@ class Control:
         self.last_coin_spawned_time = 0
         self.money = 0
         self.player_rect = pygame.Rect((screen_width - 64) // 2, screen_height - 64 - 10, 64, 64)
+        self.player_radius = 32  # Assuming player's radius is half of its width or height
 
     def run(self):
         self.spawn_coin()
@@ -66,24 +67,36 @@ class Control:
             self.last_coin_spawned_time = current_time
 
     def update_coins(self):
+        global player_x, player_y, player_width, player_height 
         for coin in self.coins:
             coin.move()
-            if coin.y >= screen_height - 50:  # if the coin hits the bottom of the screen
+            if coin.y >= screen_height:  # if the coin hits the bottom of the screen
                 self.coins.remove(coin)
-            elif self.player_rect.colliderect(pygame.Rect(coin.x - coin.radius, coin.y - coin.radius, coin.radius * 2, coin.radius * 2)):
-                self.money += coin.value
-                self.coins.remove(coin)
+            else:
+                # Calculate the distance between the center of the coin and the center of the player
+                player_center_x = self.player_rect.x + self.player_radius
+                player_center_y = self.player_rect.y + self.player_radius 
+                coin_center_x = coin.x
+                coin_center_y = coin.y
+                distance = ((coin_center_x - player_center_x) ** 2 + (coin_center_y - player_center_y) ** 2) ** 0.5
 
-        self.player_rect = pygame.Rect((screen_width - 64) // 2, screen_height - 64 - 10, 64, 64)
+                if distance < self.player_radius + coin.radius:
+                    self.money += coin.value
+                    self.coins.remove(coin)
+
 
     def show_money(self):
-        font = pygame.font.SysFont("comicsansms", 20)
-        text = font.render("Money: " + str(self.money), True, (255, 255, 255))
-        screen.blit(text, (10, 50))
         for coin in self.coins:
             coin.draw(screen)
 
+    def update_player_rect(self, x, y, w, h):
+        self.player_rect = pygame.Rect(x, y, w, h)
+
+
 play=Control()
+play.run()
+
+global player_width, player_height, player_x, player_y
 
 def game(wave):
     global score
@@ -138,6 +151,8 @@ def game(wave):
         screen.blit(score_text, (10, 10))
         wave_text = score_font.render("Wave: " + str(wv), True, (255, 255, 255))
         screen.blit(wave_text, (10, 40))
+        money_text = score_font.render("Money: " + str(play.money), True, (255, 255, 255))
+        screen.blit(money_text, (10, 70))
 
     right = False
     left = False  
@@ -227,7 +242,16 @@ def game(wave):
                 and player_y + player_height > circle_y
             ):
 
+                with open("money.txt") as f:
+                    contents = f.readlines()
+                money=""
+                for thing in contents:
+                    money+=thing
+                money=int(money)
+                money+=play.money
 
+                with open('money.txt', 'w') as h:
+                    h.write(str(money))
                 with open("highscores.txt") as z:
                     c = z.readlines()
                 for g in c:
@@ -255,14 +279,14 @@ def game(wave):
             circles.append({"x": circle_x, "y": circle_y})
 
         for circle in circles:
-            circle["y"]+=1
+            circle["y"]+=1 
 
         screen.blit(player_image, (player_x, player_y))
         draw_score()
 
         if len(enemies) == 0:
             break
-
+        play.update_player_rect(player_x, player_y, player_width, player_height)
         play.run()
 
         pygame.display.update()
