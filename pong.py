@@ -1,6 +1,6 @@
 # end 
 # q for quit
-#winniing restart
+#winning restart
 
 
 import subprocess

@@ -1,4 +1,4 @@
-#add pets
+#add pets/more functionality
 
 import pygame as py
 import sys, random
