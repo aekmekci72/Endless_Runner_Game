@@ -9,6 +9,8 @@ screen_height = 600
 screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("Space Invaders")
 
+
+
 background_image = pygame.image.load("images/space.png")
 background_image = pygame.transform.scale(background_image, (screen_width, screen_height))
 player_image = pygame.image.load("images/spaceship.png").convert_alpha()
@@ -24,6 +26,64 @@ w = 5
 
 global score
 score = 0
+
+class Coin:
+    def __init__(self, x, y, value):
+        self.x = x
+        self.y = y
+        self.value = value
+        self.radius = 10
+        self.color = (255, 215, 0) # gold color
+        self.speed = random.randint(2, 5)  
+
+    def draw(self, surface):
+        pygame.draw.circle(surface, self.color, (self.x, self.y), self.radius)
+
+    def move(self):
+        self.y += self.speed / 2
+
+class Control:
+    def __init__(self):
+        self.coins = []
+        self.last_coin_spawned_time = 0
+        self.money = 0
+        self.player_rect = pygame.Rect((screen_width - 64) // 2, screen_height - 64 - 10, 64, 64)
+
+    def run(self):
+        self.spawn_coin()
+        self.update_coins()
+        self.show_money()
+
+    def spawn_coin(self):
+        current_time = pygame.time.get_ticks()
+        if current_time - self.last_coin_spawned_time >= 3000:  # spawn every 3 seconds
+            x = random.randint(50, screen_width - 50)
+            y = -50
+            value = random.randint(1, 5)
+            coin = Coin(x, y, value)
+
+            self.coins.append(coin)
+            self.last_coin_spawned_time = current_time
+
+    def update_coins(self):
+        for coin in self.coins:
+            coin.move()
+            if coin.y >= screen_height - 50:  # if the coin hits the bottom of the screen
+                self.coins.remove(coin)
+            elif self.player_rect.colliderect(pygame.Rect(coin.x - coin.radius, coin.y - coin.radius, coin.radius * 2, coin.radius * 2)):
+                self.money += coin.value
+                self.coins.remove(coin)
+
+        self.player_rect = pygame.Rect((screen_width - 64) // 2, screen_height - 64 - 10, 64, 64)
+
+    def show_money(self):
+        font = pygame.font.SysFont("comicsansms", 20)
+        text = font.render("Money: " + str(self.money), True, (255, 255, 255))
+        screen.blit(text, (10, 50))
+        for coin in self.coins:
+            coin.draw(screen)
+
+play=Control()
 
 def game(wave):
     global score
@@ -81,6 +141,7 @@ def game(wave):
 
     right = False
     left = False  
+
 
     while running:
         for event in pygame.event.get():
@@ -188,6 +249,8 @@ def game(wave):
 
         if len(enemies) == 0:
             break
+
+        play.run()
 
         pygame.display.update()
         clock.tick(60)
