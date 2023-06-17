@@ -24,9 +24,9 @@ running = True
 clock = pygame.time.Clock()
 
 achievements = [
-    {"name": "Road Runner (500 points in Maple Rush)", "achieved": False},
+    {"name": "Road Runner (750 points in Maple Rush)", "achieved": False},
     {"name": "Cosmic Annihilator (500 points in Galactic Gourds)", "achieved": False},
-    {"name": "Winged Wonder (250 points in Acorn Ascend)", "achieved": False},
+    {"name": "Winged Wonder (500 points in Acorn Ascend)", "achieved": False},
     {"name": "Clicking Maestro (1000000 clicks in Sweater Weather Treats)", "achieved": False},
     {"name": "Reptilian Ruler (25 apples in Pumpkin Python)", "achieved": False},
     {"name": "Speed Demon (50 points in Fall Fury)", "achieved": False},
@@ -43,6 +43,26 @@ for thing in contents:
 money=int(money)
 
 
+with open("highscores.txt") as z:
+    c = z.readlines()
+for g in c:
+    x=c.index(g)
+    c[x]=g.strip()
+    c[x]=int(c[x])
+
+if c[0]>=750:
+    (achievements[0])["achieved"]=True
+if c[2]>=500:
+    (achievements[1])["achieved"]=True
+if c[4]>=500:
+    (achievements[2])["achieved"]=True
+if c[5]>=1000000:
+    (achievements[3])["achieved"]=True
+if c[6]>=25:
+    (achievements[4])["achieved"]=True
+if c[7]>=50:
+    (achievements[5])["achieved"]=True
+
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -50,15 +70,9 @@ while running:
         elif event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 1:
                 mouse_pos = pygame.mouse.get_pos()
-                if (
-                    mouse_pos[0] > 750
-                    and mouse_pos[0] < 950
-                    and mouse_pos[1] > 200
-                    and mouse_pos[1] < 230
-                ):
-                    if not achievements[6]["achieved"] and money >= 250:
-                        achievements[6]["achieved"] = True
-                        money -= 250
+                if (mouse_pos[0]>235 and mouse_pos[0]<445 and mouse_pos[1]>365 and mouse_pos[1]<460):
+                    subprocess.Popen("python intro.py")
+                    pygame.quit()
 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_q:
