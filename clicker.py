@@ -1,11 +1,15 @@
-#add pets
-
 import pygame as py
 import sys, random
 import subprocess
 
 py.init()
 clock = py.time.Clock()
+
+
+font2 = py.font.Font("images/Neucha-Regular.ttf", 50) 
+font = py.font.Font("images/Neucha-Regular.ttf", 30)
+
+
 
 class Coin:
     def __init__(self, x, y, value):
@@ -125,9 +129,21 @@ class Control:
         if self.clickMultBtn.collidepoint(self.pos):
             if py.mouse.get_pressed()[0]:
                 self.buy_click_multiplier()
-        
-
-
+        if self.chickBtn.collidepoint(self.pos):
+            if py.mouse.get_pressed()[0]:
+                self.buy_chick()
+        if self.catBtn.collidepoint(self.pos):
+            if py.mouse.get_pressed()[0]:
+                self.buy_cat()
+        if self.dogBtn.collidepoint(self.pos):
+            if py.mouse.get_pressed()[0]:
+                self.buy_dog()
+        if self.dragonBtn.collidepoint(self.pos):
+            if py.mouse.get_pressed()[0]:
+                self.buy_unicorn()
+        if self.unicornBtn.collidepoint(self.pos):
+            if py.mouse.get_pressed()[0]:
+                self.buy_dragon()
     def upgrade(self):
         py.draw.rect(window, "#522920", self.upgradeBtn, border_radius=15)
         self.display_cost = font.render(f"Cost: {str(self.upgrade1_cost)}", True, "#eee0b1")
@@ -167,22 +183,61 @@ class Control:
             self.auto_clicker_cps+=1+self.num_autoclicker
             self.auto_clicker_cost*=5
             self.num_autoclicker+=1
+
     def pet(self):
         py.draw.rect(window, "#522920", self.chickBtn, border_radius=15)
         py.draw.rect(window, "#522920", self.catBtn, border_radius=15)
         py.draw.rect(window, "#522920", self.dogBtn, border_radius=15)
         py.draw.rect(window, "#522920", self.unicornBtn, border_radius=15)
         py.draw.rect(window, "#522920", self.dragonBtn, border_radius=15)
+        
+        chick_text = self.font.render("Buy Chick", True, "#eee0b1")
+        chick_cost_text = self.font.render("250 coins, 1 cps", True, "#eee0b1")
+        cat_text = self.font.render("Buy Cat", True, "#eee0b1")
+        cat_cost_text = self.font.render("1000 coins, 3 cps", True, "#eee0b1")
+        dog_text = self.font.render("Buy Dog", True, "#eee0b1")
+        dog_cost_text = self.font.render("2500 coins, 5 cps", True, "#eee0b1")
+        unicorn_text = self.font.render("Buy Unicorn", True, "#eee0b1")
+        unicorn_cost_text = self.font.render("10000 coins, 10 cps", True, "#eee0b1")
+        dragon_text = self.font.render("Buy Dragon", True, "#eee0b1")
+        dragon_cost_text = self.font.render("25000 coins, 20 cps", True, "#eee0b1")
+        
+        window.blit(chick_text, (915, 75))
+        window.blit(chick_cost_text, (915, 100))
+        window.blit(cat_text, (920, 225))
+        window.blit(cat_cost_text, (915, 250))
+        window.blit(dog_text, (930, 375))
+        window.blit(dog_cost_text, (915, 400))
+        window.blit(unicorn_text, (1120, 75))
+        window.blit(unicorn_cost_text, (1120, 100))
+        window.blit(dragon_text, (1115, 225))
+        window.blit(dragon_cost_text, (1115, 250))
+        
     def buy_chick(self):
-        pass
+        if self.num_of_cookies >=250:
+            self.num_of_cookies-=250
+            self.auto_clicker_on=True
+            self.auto_clicker_cps+=1
     def buy_cat(self):
-        pass
+        if self.num_of_cookies >=1000:
+            self.num_of_cookies-=1000
+            self.auto_clicker_on=True
+            self.auto_clicker_cps+=3
     def buy_dog(self):
-        pass
-    def buy_dragon(self):
-        pass
+        if self.num_of_cookies >=2500:
+            self.num_of_cookies-=2500
+            self.auto_clicker_on=True
+            self.auto_clicker_cps+=5
     def buy_unicorn(self):
-        pass
+        if self.num_of_cookies >=10000:
+            self.num_of_cookies-=10000
+            self.auto_clicker_on=True
+            self.auto_clicker_cps+=10
+    def buy_dragon(self):
+        if self.num_of_cookies >=25000:
+            self.num_of_cookies-=25000
+            self.auto_clicker_on=True
+            self.auto_clicker_cps+=20
     def click_multiplier(self):
         py.draw.rect(window, "#522920", self.clickMultBtn, border_radius=15)
         self.clickmult_description = self.font.render(f"Buy Click Multiplier", True, "#eee0b1")
@@ -193,57 +248,29 @@ class Control:
         window.blit(self.clickmult_update, (725, 425))
 
     def buy_click_multiplier(self):
-        if self.num_of_cookies >=self.click_multipliercost:
-            self.num_of_cookies-=self.click_multipliercost
-            self.click_multipliercost*=2
-            self.click_multipliers +=0.25
+        if self.num_of_cookies >= self.click_multipliercost:
+            self.num_of_cookies -= self.click_multipliercost
+            self.click_multipliers += 0.25
+            self.click_multipliercost *= 2
 
-background = py.image.load("images/background.png")
-
-h = background.get_height()-50
-w = background.get_width()*2
-
-py.display.set_caption("Cookie Clicker") 
-window = py.display.set_mode(size=(w, h))
-
-font2 = py.font.Font("images/Neucha-Regular.ttf", 50) 
-font = py.font.Font("images/Neucha-Regular.ttf", 30)
+w, h = 1280, 720
+window = py.display.set_mode((w, h))
+py.display.set_caption("Cookie Clicker")
 
 
-game = Control()
+running = True
+controller = Control()
 
-heading = font2.render("Cookie Clicker", True, "white")
-instructions = font.render("Press 'q' to quit", True, "white")
+while running:
+    window.fill("#2F2F2F")
 
-while True: 
-    window.blit(background, (0,0))
-    window.blit(background, (w/2,0))
+    controller.run()
 
-    for i in py.event.get():
-        if i.type == py.QUIT:
+    for event in py.event.get():
+        if event.type == py.QUIT:
+            running = False
             py.quit()
             sys.exit()
-        if i.type==py.KEYDOWN and i.key==py.K_q:
-            with open("highscores.txt") as z:
-                c = z.readlines()
-            for g in c:
-                x=c.index(g)
-                c[x]=g.strip()
-            x=(c[5])
-            if int(x) < game.num_of_cookies:
-                c[5] = str(game.num_of_cookies)
-            with open('highscores.txt', 'w') as y:
-                for t in c:
-                    y.write(str(t)+"\n")
-            subprocess.Popen("python intro.py")
-            py.quit()
 
-    
-
-    window.blit(heading, (270, 50))
-    window.blit(instructions,( 10,10))
-
-
-    game.run()
     py.display.update()
     clock.tick(60)
