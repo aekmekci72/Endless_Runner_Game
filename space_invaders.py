@@ -1,4 +1,3 @@
-#add pause +restart
 import pygame
 import random
 import subprocess
@@ -26,6 +25,14 @@ w = 5
 
 global score
 score = 0
+
+def restart_game():
+    global score, w, play
+    score = 0
+    w = 5
+    play = Control()
+    play.run()
+    game(w)
 
 class Coin:
     def __init__(self, x, y, value):
@@ -156,145 +163,160 @@ def game(wave):
 
     right = False
     left = False  
-
+    pause=False
+    pause_font = pygame.font.Font(None, 72)
 
     while running:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                subprocess.Popen("python end_screen.py")
+        if pause!=True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    subprocess.Popen("python end_screen.py")
 
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_LEFT and player_x > 0:
-                    left = True
-                if event.key == pygame.K_RIGHT and player_x < screen_width - player_width:
-                    right = True
-                if event.key == pygame.K_SPACE and bullet_state == "ready":
-                    bullet_x = player_x + player_width // 2 - bullet_width // 2
-                    bullet_y = player_y
-                    fire_bullet(bullet_x, bullet_y)
-            if event.type == pygame.KEYUP:
-                if event.key == pygame.K_LEFT:
-                    left = False
-                if event.key == pygame.K_RIGHT:
-                    right = False
+                if event.type==pygame.KEYDOWN:
+                    if event.key==pygame.K_p:
+                        pause=True
+                
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_LEFT and player_x > 0:
+                        left = True
+                    if event.key == pygame.K_RIGHT and player_x < screen_width - player_width:
+                        right = True
+                    if event.key == pygame.K_SPACE and bullet_state == "ready":
+                        bullet_x = player_x + player_width // 2 - bullet_width // 2
+                        bullet_y = player_y
+                        fire_bullet(bullet_x, bullet_y)
+                if event.type == pygame.KEYUP:
+                    if event.key == pygame.K_LEFT:
+                        left = False
+                    if event.key == pygame.K_RIGHT:
+                        right = False
+            if pause:
+                pause_text = pause_font.render("PAUSED", True, (255, 255, 255))
+                screen.blit(pause_text, (screen_width // 2 - 100, screen_height // 2))
 
-        if right and player_x < screen_width - player_width:
-            player_x += player_speed
-        if left and player_x > 0:
-            player_x -= player_speed
+            else:
 
-        screen.blit(background_image, (0, 0))
+                if right and player_x < screen_width - player_width:
+                    player_x += player_speed
+                if left and player_x > 0:
+                    player_x -= player_speed
 
-        if bullet_state == "fire":
-            bullet_y -= bullet_speed
-            if bullet_y < 0:
-                bullet_state = "ready"
+                screen.blit(background_image, (0, 0))
 
-        for enemy in enemies:
-            enemy_x = enemy["x"]
-            enemy_y = enemy["y"]
+                if bullet_state == "fire":
+                    bullet_y -= bullet_speed
+                    if bullet_y < 0:
+                        bullet_state = "ready"
 
-            enemy_x += enemy["speed"]
-            if enemy_x <= 0 or enemy_x >= screen_width - enemy_width:
-                for e in enemies:
-                    e["speed"] *= -1
-                    e["y"] += wave
-                enemy_y += wave
+                for enemy in enemies:
+                    enemy_x = enemy["x"]
+                    enemy_y = enemy["y"]
 
-            enemy["x"] = enemy_x
-            enemy["y"] = enemy_y
+                    enemy_x += enemy["speed"]
+                    if enemy_x <= 0 or enemy_x >= screen_width - enemy_width:
+                        for e in enemies:
+                            e["speed"] *= -1
+                            e["y"] += wave
+                        enemy_y += wave
 
-            if (
-                bullet_x < enemy_x + enemy_width
-                and bullet_x + bullet_width > enemy_x
-                and bullet_y < enemy_y + enemy_height
-                and bullet_y + bullet_height > enemy_y
-            ):
-                bullet_state = "ready"
-                enemies.remove(enemy)
-                score += 1
+                    enemy["x"] = enemy_x
+                    enemy["y"] = enemy_y
 
-            if (
-                player_x < enemy_x + enemy_width
-                and player_x + player_width > enemy_x
-                and player_y < enemy_y + enemy_height
-                and player_y + player_height > enemy_y
-            ):
-                subprocess.Popen("python end_screen.py")
-                pygame.quit()
+                    if (
+                        bullet_x < enemy_x + enemy_width
+                        and bullet_x + bullet_width > enemy_x
+                        and bullet_y < enemy_y + enemy_height
+                        and bullet_y + bullet_height > enemy_y
+                    ):
+                        bullet_state = "ready"
+                        enemies.remove(enemy)
+                        score += 1
 
-            screen.blit(enemy_image, (enemy_x, enemy_y))
+                    if (
+                        player_x < enemy_x + enemy_width
+                        and player_x + player_width > enemy_x
+                        and player_y < enemy_y + enemy_height
+                        and player_y + player_height > enemy_y
+                    ):
+                        subprocess.Popen("python end_screen.py")
+                        pygame.quit()
 
-        if bullet_state == "fire":
-            screen.blit(bullet_image, (bullet_x, bullet_y))
-            bullet_y -= bullet_speed
+                    screen.blit(enemy_image, (enemy_x, enemy_y))
 
-        for circle in circles:
-            circle_x = circle["x"]
-            circle_y = circle["y"]
+                if bullet_state == "fire":
+                    screen.blit(bullet_image, (bullet_x, bullet_y))
+                    bullet_y -= bullet_speed
 
-            circle_y += circle_speed
+                for circle in circles:
+                    circle_x = circle["x"]
+                    circle_y = circle["y"]
 
-            if (
-                player_x < circle_x + bullet_width
-                and player_x + player_width > circle_x
-                and player_y < circle_y + bullet_height
-                and player_y + player_height > circle_y
-            ):
+                    circle_y += circle_speed
 
-                with open("money.txt") as f:
-                    contents = f.readlines()
-                money=""
-                for thing in contents:
-                    money+=thing
-                money=int(money)
-                money+=play.money
+                    if (
+                        player_x < circle_x + bullet_width
+                        and player_x + player_width > circle_x
+                        and player_y < circle_y + bullet_height
+                        and player_y + player_height > circle_y
+                    ):
 
-                with open('money.txt', 'w') as h:
-                    h.write(str(money))
-                with open("highscores.txt") as z:
-                    c = z.readlines()
-                for g in c:
-                    x=c.index(g)
-                    c[x]=g.strip()
-                x=(c[2])
-                if int(x) < score:
-                    c[2] = str(score)
-                with open('highscores.txt', 'w') as y:
-                    for t in c:
-                        y.write(str(t)+"\n")
-                subprocess.Popen("python end_screen.py")
-                pygame.quit()
+                        with open("money.txt") as f:
+                            contents = f.readlines()
+                        money=""
+                        for thing in contents:
+                            money+=thing
+                        money=int(money)
+                        money+=play.money
 
-            if circle_y > screen_height:
-                circles.remove(circle)
+                        with open('money.txt', 'w') as h:
+                            h.write(str(money))
+                        with open("highscores.txt") as z:
+                            c = z.readlines()
+                        for g in c:
+                            x=c.index(g)
+                            c[x]=g.strip()
+                        x=(c[2])
+                        if int(x) < score:
+                            c[2] = str(score)
+                        with open('highscores.txt', 'w') as y:
+                            for t in c:
+                                y.write(str(t)+"\n")
+                        subprocess.Popen("python end_screen.py")
+                        pygame.quit()
 
-            screen.blit(circle_image, (circle_x, circle_y))
+                    if circle_y > screen_height:
+                        circles.remove(circle)
 
-        if random.randint(0, 500) < wave:
-            r=random.randint(0,len(enemies)-1)
+                    screen.blit(circle_image, (circle_x, circle_y))
 
-            circle_x = (enemies[r])["x"]
-            circle_y = (enemies[r])["y"]
-            circles.append({"x": circle_x, "y": circle_y})
+                if random.randint(0, 500) < wave:
+                    r=random.randint(0,len(enemies)-1)
 
-        for circle in circles:
-            circle["y"]+=1 
+                    circle_x = (enemies[r])["x"]
+                    circle_y = (enemies[r])["y"]
+                    circles.append({"x": circle_x, "y": circle_y})
 
-        screen.blit(player_image, (player_x, player_y))
-        draw_score()
+                for circle in circles:
+                    circle["y"]+=1 
 
-        if len(enemies) == 0:
-            break
-        play.update_player_rect(player_x, player_y, player_width, player_height)
-        play.run()
+                screen.blit(player_image, (player_x, player_y))
+                draw_score()
 
-        pygame.display.update()
-        clock.tick(60)
+                if len(enemies) == 0:
+                    break
+                play.update_player_rect(player_x, player_y, player_width, player_height)
+                play.run()
+
+                pygame.display.update()
+                clock.tick(60)
+        
+        else:
+            for event in pygame.event.get():
+                if event.type==pygame.KEYDOWN:
+                    if event.key==pygame.K_p:
+                        pause=False
 
 
 while True:
     game(w)
     w += 1
-
-
