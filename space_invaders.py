@@ -1,3 +1,4 @@
+#add pause +restart
 import pygame
 import random
 import subprocess
@@ -8,7 +9,6 @@ screen_width = 800
 screen_height = 600
 screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("Space Invaders")
-
 
 
 background_image = pygame.image.load("images/space.png")

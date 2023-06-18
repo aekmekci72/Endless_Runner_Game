@@ -1,3 +1,5 @@
+#add pause
+
 import subprocess, random
 import pygame as py
 
@@ -15,7 +17,7 @@ py.display.set_caption("Pong Game")
 p_height = 150
 p_width=18
 global w_score
-w_score = 1
+w_score = 5
 
 
 class Ball:

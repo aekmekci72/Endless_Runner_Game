@@ -1,4 +1,4 @@
-# add a restart feature
+# add a restart +pause
 # add coins
 
 import random; import pygame as py; from pygame.locals import *

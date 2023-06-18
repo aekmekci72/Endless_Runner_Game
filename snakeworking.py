@@ -1,4 +1,4 @@
-#add pause feature
+#add pause +restart
 
 import subprocess
 import pygame as py, sys, random
