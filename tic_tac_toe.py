@@ -1,3 +1,4 @@
+import random
 from random import randint
 import pygame, sys, subprocess
 
@@ -9,13 +10,14 @@ cell = windowSize // 3
 center_of_cell = pygame.math.Vector2(cell / 2)
 pygame.display.set_caption("Tic Tac Toe")
 
-global xscore, oscore
+global xscore, oscore, money
 
 xscore=0
 oscore=0
+money = 0
 
 class Tic_tac_toe:
-    global xscore, oscore
+    global xscore, oscore, money
     def __init__(self, game):
         self.game = game
         self.font = pygame.font.Font('images/Neucha-Regular.ttf',cell//3)
@@ -26,6 +28,7 @@ class Tic_tac_toe:
         self.create_board()
         self.create_array()
         self.winner = None
+
     
     def setImages(self):
         self.board = self.get_scaled_image(path='images/board.png', res=[windowSize] * 2)
@@ -81,7 +84,7 @@ class Tic_tac_toe:
                     self.game.screen.blit(display, pos)
     
     def showwinner(self):
-        global xscore,oscore
+        global xscore,oscore, money
         if self.winner:
             if self.winner == 'tie':
                 label = self.font.render('No winner', True, 'white', 'black')
@@ -98,6 +101,8 @@ class Tic_tac_toe:
                 self.game.screen.blit(label2, (windowSize // 2 - label2.get_width() // 2, windowSize // 2))
                 label3 = self.font.render('Press q to quit', True, 'white', 'gold')
                 self.game.screen.blit(label3, (windowSize // 2 - label2.get_width() // 2, windowSize // 2 +100))
+                label4 = self.font.render('Money: '+str(money), True, 'white', 'gold')
+                self.game.screen.blit(label4, (50, 10))
         else:
             pass
 
@@ -115,7 +120,7 @@ class Tic_tac_toe:
 
 
     def is_winner(self):
-        global xscore,oscore
+        global xscore,oscore, money
         for i in self.array:
             x=[self.gameboard[i][j] for i, j in i]
             lsum = sum(x)
@@ -125,8 +130,10 @@ class Tic_tac_toe:
                                     pygame.math.Vector2(i[2][::-1]) * cell + center_of_cell]
                 if self.winner=="X":
                     xscore+=1
+                    money+=random.randint(3,7)
                 if self.winner=="O":
                     oscore+=1
+                    money+=random.randint(3,7)
         if self.steps == 9 and not self.winner:
             self.winner = 'tie'
 
