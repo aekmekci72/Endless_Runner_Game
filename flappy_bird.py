@@ -207,7 +207,7 @@ while run:
             if event.type == pygame.QUIT:
                 run = False
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_UP:
+                if event.key == pygame.K_SPACE:
                     player.velocity_y = JUMP_FORCE
                 if event.key == pygame.K_p:
                     pause = True
