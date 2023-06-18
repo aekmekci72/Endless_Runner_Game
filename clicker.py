@@ -201,6 +201,9 @@ class Control:
         unicorn_cost_text = self.font.render("10000 coins, 10 cps", True, "#eee0b1")
         dragon_text = self.font.render("Buy Dragon", True, "#eee0b1")
         dragon_cost_text = self.font.render("25000 coins, 20 cps", True, "#eee0b1")
+        instruct_text = self.font.render("Press q to quit", True, "#eee0b1")
+
+        window.blit(instruct_text, (10,10))
         
         window.blit(chick_text, (915, 75))
         window.blit(chick_cost_text, (915, 100))
@@ -253,7 +256,7 @@ class Control:
             self.click_multipliers += 0.25
             self.click_multipliercost *= 2
 
-w, h = 1280, 720
+w, h = 1500, 720
 window = py.display.set_mode((w, h))
 py.display.set_caption("Cookie Clicker")
 
@@ -271,6 +274,18 @@ while running:
             running = False
             py.quit()
             sys.exit()
+        if event.type==py.KEYDOWN and event.key==py.K_q:
+            with open("money.txt") as f:
+                contents = f.readlines()
+            money=""
+            for thing in contents:
+                money+=thing
+            money=int(money)
+            money+=controller.money
+            with open('money.txt', 'w') as h:
+                h.write(str(money))
+            subprocess.Popen("python intro.py")
+            py.quit()
 
     py.display.update()
     clock.tick(60)
