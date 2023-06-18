@@ -1,4 +1,4 @@
-#add coins 
+#add pause feature
 
 import subprocess
 import pygame as py, sys, random
@@ -12,6 +12,9 @@ window = py.display.set_mode((screen_width, screen_height))
 py.display.set_caption("Snake Game")
 
 
+global money
+
+money=0
 class Food:
     def __init__(self):
         randheight = random.randint(tile, screen_height - tile) // tile
@@ -25,6 +28,22 @@ class Food:
     def draw(self):
         py.draw.rect(window, "orange", self.rect)
 
+
+class Coin:
+    def __init__(self):
+        randheight = random.randint(tile, screen_height - tile) // tile
+        self.y = int(randheight) * tile
+
+        randwidth = random.randint(tile, screen_width - tile) // tile
+        self.x = int(randwidth) * tile
+
+        self.radius = tile // 3
+        self.center = (self.x + self.radius, self.y + self.radius)
+
+    def draw(self):
+        py.draw.circle(window, "yellow", self.center, self.radius)
+
+c=Coin()
 
 class Snake:
     def __init__(self):
@@ -42,8 +61,22 @@ class Snake:
 
         self.start = py.Rect(self.x, self.y, tile, tile)
 
+        self.coin = Coin()
+
     def move(self):
-        global food
+        global food, money
+        
+        self.coin_rect = py.Rect(
+        self.coin.center[0] - self.coin.radius,
+        self.coin.center[1] - self.coin.radius,
+        self.coin.radius * 2,
+        self.coin.radius * 2
+        )
+
+
+        if snake1.start.colliderect(self.coin_rect):
+            self.coin = Coin()
+            money+=random.randint(1,5)
 
         self.length.append(self.start)
         l = len(self.length) - 1
@@ -54,6 +87,8 @@ class Snake:
         self.start.y += self.ydir * tile
         self.start.x += self.xdir * tile
         self.length.remove(self.start)
+
+        self.coin.draw()
 
         if self.gameOver:
             with open("highscores.txt") as z:
@@ -155,9 +190,17 @@ while playing:
         py.draw.rect(window, "red", unit)
     window.blit(showscore, score_box)
 
+    money_text = score_font.render(f"Money: {money}", True, "white")
+    money_box = money_text.get_rect(topleft=(tile, screen_height - tile*3))
+
+    # blit the money surface to the screen
+    window.blit(money_text, money_box)
+
     if snake1.start.colliderect(food.rect):
         snake1.length.append(py.Rect(unit.x, unit.y, tile, tile))
         food = Food()
+    
+    
 
     py.display.update()
     clock.tick(10)
