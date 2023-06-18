@@ -11,8 +11,8 @@ clock = py.time.Clock()
 font2 = py.font.Font("images/Neucha-Regular.ttf", 50) 
 font = py.font.Font("images/Neucha-Regular.ttf", 30)
 
-
-
+cookie_image=py.image.load("images/cookie.png")
+background = py.image.load("images/bgcookieclicker.jpg")
 class Coin:
     def __init__(self, x, y, value):
         self.x = x
@@ -95,18 +95,20 @@ class Control:
                 self.coins.remove(coin)
     def show_money(self):
         font = py.font.SysFont("comicsansms", 20)
-        text = font.render("Money: " + str(self.money), True, (255, 255, 255))
+        text = font.render("Money: " + str(self.money), True, (0, 0, 0))
         window.blit(text, (10, 50))
 
         
     def counter(self):
         x=str([self.num_of_cookies])
-        self.cookiecount = font2.render("Cookies: "+x, True, "white")
+        self.cookiecount = font2.render("Cookies: "+x, True, "black")
         window.blit(self.cookiecount, (20,500))
 
     def click(self):
         self.pos = py.mouse.get_pos()
         py.draw.rect(window, self.color, self.circle, border_radius = 150)
+        cookie_rect = cookie_image.get_rect(center=(400,300))
+        window.blit(cookie_image,cookie_rect)
 
         if self.upgradeBtn.collidepoint(self.pos):
             if py.mouse.get_pressed()[0] and self.num_of_cookies>=self.upgrade1_cost:
@@ -151,8 +153,8 @@ class Control:
         self.display_cost = font.render(f"Cost: {str(self.upgrade1_cost)}", True, "#eee0b1")
         self.upgrade1_description = self.font.render(f"+{self.cpc} cookie per click", True, "#eee0b1") 
 
-        window.blit(self.upgrade1_description, (725, 65)) 
-        window.blit(self.display_cost, (745, 85))
+        window.blit(self.upgrade1_description, (715, 65)) 
+        window.blit(self.display_cost, (735, 85))
 
     def auto_clicker(self):
         if not self.auto_clicker_on:
@@ -203,20 +205,20 @@ class Control:
         unicorn_cost_text = self.font.render("10000 coins, 10 cps", True, "#eee0b1")
         dragon_text = self.font.render("Buy Dragon", True, "#eee0b1")
         dragon_cost_text = self.font.render("25000 coins, 20 cps", True, "#eee0b1")
-        instruct_text = self.font.render("Press q to quit", True, "#eee0b1")
+        instruct_text = self.font.render("Press q to quit", True, "black")
 
         window.blit(instruct_text, (10,10))
         
-        window.blit(chick_text, (915, 75))
-        window.blit(chick_cost_text, (915, 100))
-        window.blit(cat_text, (920, 225))
-        window.blit(cat_cost_text, (915, 250))
-        window.blit(dog_text, (930, 375))
-        window.blit(dog_cost_text, (915, 400))
-        window.blit(unicorn_text, (1120, 75))
-        window.blit(unicorn_cost_text, (1120, 100))
-        window.blit(dragon_text, (1115, 225))
-        window.blit(dragon_cost_text, (1115, 250))
+        window.blit(chick_text, (905, 75))
+        window.blit(chick_cost_text, (905, 100))
+        window.blit(cat_text, (910, 225))
+        window.blit(cat_cost_text, (905, 250))
+        window.blit(dog_text, (920, 375))
+        window.blit(dog_cost_text, (905, 400))
+        window.blit(unicorn_text, (1110, 75))
+        window.blit(unicorn_cost_text, (1105, 100))
+        window.blit(dragon_text, (1105, 225))
+        window.blit(dragon_cost_text, (1105, 250))
         
     def buy_chick(self):
         if self.num_of_cookies >=250:
@@ -261,13 +263,14 @@ class Control:
 w, h = 1500, 720
 window = py.display.set_mode((w, h))
 py.display.set_caption("Cookie Clicker")
+background=py.transform.scale(background, (w,h))
 
 
 running = True
 controller = Control()
 
 while running:
-    window.fill("#2F2F2F")
+    window.blit(background, (0,0))
 
     controller.run()
 
