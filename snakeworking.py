@@ -1,5 +1,3 @@
-#add pause +restart
-
 import subprocess
 import pygame as py, sys, random
 py.init()
@@ -140,67 +138,81 @@ while not playing:
     py.display.update()
     clock.tick(10)
 
+pause = False
+
 while playing:
-    for event in py.event.get():
-        if event.type == py.QUIT:
-            py.quit()
-            sys.exit()
-
-        if event.type == py.KEYDOWN:
-            if event.key == py.K_SPACE:
-                
-                subprocess.Popen("python intro.py")
+    if pause!=True:
+        for event in py.event.get():
+            if event.type == py.QUIT:
                 py.quit()
+                sys.exit()
+            
+            if event.type==py.KEYDOWN:
+                if event.key==py.K_p:
+                    pause=True
 
 
-            if event.key == py.K_DOWN and snake1.ydir != -1:
-                snake1.ydir = 1
-                snake1.xdir = 0
-            elif event.key == py.K_UP and snake1.ydir != 1:
-                snake1.ydir = -1
-                snake1.xdir = 0
-            elif event.key == py.K_RIGHT and snake1.xdir != -1:
-                snake1.ydir = 0
-                snake1.xdir = 1
-            elif event.key == py.K_LEFT and snake1.xdir != 1:
-                snake1.ydir = 0
-                snake1.xdir = -1
+            if event.type == py.KEYDOWN:
+                if event.key == py.K_SPACE:
+                    
+                    subprocess.Popen("python intro.py")
+                    py.quit()
 
-            if event.key == py.K_s and snake1.ydir != -1:
-                snake1.ydir = 1
-                snake1.xdir = 0
-            elif event.key == py.K_w and snake1.ydir != 1:
-                snake1.ydir = -1
-                snake1.xdir = 0
-            elif event.key == py.K_d and snake1.xdir != -1:
-                snake1.ydir = 0
-                snake1.xdir = 1
-            elif event.key == py.K_a and snake1.xdir != 1:
-                snake1.ydir = 0
-                snake1.xdir = -1
 
-    window.fill('black')
+                if event.key == py.K_DOWN and snake1.ydir != -1:
+                    snake1.ydir = 1
+                    snake1.xdir = 0
+                elif event.key == py.K_UP and snake1.ydir != 1:
+                    snake1.ydir = -1
+                    snake1.xdir = 0
+                elif event.key == py.K_RIGHT and snake1.xdir != -1:
+                    snake1.ydir = 0
+                    snake1.xdir = 1
+                elif event.key == py.K_LEFT and snake1.xdir != 1:
+                    snake1.ydir = 0
+                    snake1.xdir = -1
 
-    food.draw()
-    snake1.move()
+                if event.key == py.K_s and snake1.ydir != -1:
+                    snake1.ydir = 1
+                    snake1.xdir = 0
+                elif event.key == py.K_w and snake1.ydir != 1:
+                    snake1.ydir = -1
+                    snake1.xdir = 0
+                elif event.key == py.K_d and snake1.xdir != -1:
+                    snake1.ydir = 0
+                    snake1.xdir = 1
+                elif event.key == py.K_a and snake1.xdir != 1:
+                    snake1.ydir = 0
+                    snake1.xdir = -1
 
-    showscore = score_font.render(f"{len(snake1.length)}", True, "white")
-    py.draw.rect(window, "red", snake1.start)
-    for unit in snake1.length:
-        py.draw.rect(window, "red", unit)
-    window.blit(showscore, score_box)
+        window.fill('black')
 
-    money_text = score_font.render(f"Money: {money}", True, "white")
-    money_box = money_text.get_rect(topleft=(tile, screen_height - tile*3))
+        food.draw()
+        snake1.move()
 
-    # blit the money surface to the screen
-    window.blit(money_text, money_box)
+        showscore = score_font.render(f"{len(snake1.length)}", True, "white")
+        py.draw.rect(window, "red", snake1.start)
+        for unit in snake1.length:
+            py.draw.rect(window, "red", unit)
+        window.blit(showscore, score_box)
 
-    if snake1.start.colliderect(food.rect):
-        snake1.length.append(py.Rect(unit.x, unit.y, tile, tile))
-        food = Food()
+        money_text = score_font.render(f"Money: {money}", True, "white")
+        money_box = money_text.get_rect(topleft=(tile, screen_height - tile*3))
+
+        # blit the money surface to the screen
+        window.blit(money_text, money_box)
+
+        if snake1.start.colliderect(food.rect):
+            snake1.length.append(py.Rect(unit.x, unit.y, tile, tile))
+            food = Food()
+        
+        
+
+        py.display.update()
+        clock.tick(10)
     
-    
-
-    py.display.update()
-    clock.tick(10)
+    else:
+        for event in py.event.get():
+            if event.type==py.KEYDOWN:
+                if event.key==py.K_p:
+                    pause=False
