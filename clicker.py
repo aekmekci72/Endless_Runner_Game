@@ -37,9 +37,14 @@ class Control:
         self.money=0
 
         self.circle = py.Rect(400-150,300-150,300,300)
-        self.upgradeBtn =  py.Rect(710, 50, 185, 75)
-        self.autoClickerBtn = py.Rect(710, 150, 185, 125)
-        self.clickMultBtn = py.Rect(710, 300, 185, 125)
+        self.upgradeBtn =  py.Rect(700, 50, 185, 125)
+        self.autoClickerBtn = py.Rect(700, 200, 185, 125)
+        self.clickMultBtn = py.Rect(700, 350, 185, 125)
+        self.chickBtn= py.Rect(900, 50, 185, 125)
+        self.catBtn= py.Rect(900, 200, 185, 125)
+        self.dogBtn= py.Rect(900, 350, 185, 125)
+        self.dragonBtn= py.Rect(1100, 50, 185, 125)
+        self.unicornBtn= py.Rect(1100, 200, 185, 125)
         self.auto_clicker_on = False
         self.auto_clicker_cost = 150
         self.auto_clicker_timer = 0
@@ -57,7 +62,7 @@ class Control:
         self.upgrade()
         self.auto_clicker()
         self.click_multiplier()
-        
+        self.pet()
         self.spawn_coin()
         self.update_coins()
         self.show_money()
@@ -140,9 +145,9 @@ class Control:
             self.auto_clicker_c = self.font.render(f"({self.auto_clicker_cost} cookies)", True, "#eee0b1")
             s=self.auto_clicker_cps+1+self.num_autoclicker
             self.auto_clicker_update = self.font.render(f"0 -> {s} cps)", True, "#eee0b1")
-            window.blit(self.auto_clicker_description, (725, 165))
-            window.blit(self.auto_clicker_c, (725, 195))
-            window.blit(self.auto_clicker_update, (725, 225))
+            window.blit(self.auto_clicker_description, (725, 215))
+            window.blit(self.auto_clicker_c, (725, 245))
+            window.blit(self.auto_clicker_update, (725, 275))
             
         else:
             self.auto_clicker_timer += 1
@@ -153,9 +158,9 @@ class Control:
             self.auto_clicker_c = self.font.render(f"({self.auto_clicker_cost} cookies)", True, "#eee0b1")
             s=self.auto_clicker_cps+1+self.num_autoclicker
             self.auto_clicker_update = self.font.render(f"{int(self.auto_clicker_cps)} -> {s} cps)", True, "#eee0b1")
-            window.blit(self.auto_clicker_description, (725, 165))
-            window.blit(self.auto_clicker_c, (725, 195))
-            window.blit(self.auto_clicker_update, (725, 225))
+            window.blit(self.auto_clicker_description, (725, 215))
+            window.blit(self.auto_clicker_c, (725, 245))
+            window.blit(self.auto_clicker_update, (725, 275))
 
     def buy_auto_clicker(self):
         if self.num_of_cookies >= self.auto_clicker_cost:
@@ -164,15 +169,30 @@ class Control:
             self.auto_clicker_cps+=1+self.num_autoclicker
             self.auto_clicker_cost*=5
             self.num_autoclicker+=1
-
+    def pet(self):
+        py.draw.rect(window, "#522920", self.chickBtn, border_radius=15)
+        py.draw.rect(window, "#522920", self.catBtn, border_radius=15)
+        py.draw.rect(window, "#522920", self.dogBtn, border_radius=15)
+        py.draw.rect(window, "#522920", self.unicornBtn, border_radius=15)
+        py.draw.rect(window, "#522920", self.dragonBtn, border_radius=15)
+    def buy_chick(self):
+        pass
+    def buy_cat(self):
+        pass
+    def buy_dog(self):
+        pass
+    def buy_dragon(self):
+        pass
+    def buy_unicorn(self):
+        pass
     def click_multiplier(self):
         py.draw.rect(window, "#522920", self.clickMultBtn, border_radius=15)
         self.clickmult_description = self.font.render(f"Buy Click Multiplier", True, "#eee0b1")
         self.clickmult_c = self.font.render(f"({self.click_multipliercost} cookies)", True, "#eee0b1")
         self.clickmult_update = self.font.render(f"{int(self.click_multipliers)}x -> {self.click_multipliers+0.25}x)", True, "#eee0b1")
-        window.blit(self.clickmult_description, (725, 315))
-        window.blit(self.clickmult_c, (725, 345))
-        window.blit(self.clickmult_update, (725, 375))
+        window.blit(self.clickmult_description, (725, 365))
+        window.blit(self.clickmult_c, (725, 395))
+        window.blit(self.clickmult_update, (725, 425))
 
     def buy_click_multiplier(self):
         if self.num_of_cookies >=self.click_multipliercost:
