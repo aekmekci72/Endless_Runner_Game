@@ -1,6 +1,4 @@
-#click multiplier
-#click assistant 
-#time warp
+#add pets
 
 import pygame as py
 import sys, random
