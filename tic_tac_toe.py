@@ -62,7 +62,7 @@ class Tic_tac_toe:
         self.process()
 
     def start(self):
-        global xscore,oscore
+        global xscore,oscore, money
         self.game.screen.blit(self.board, (0, 0))
         l = self.font.render(("X: "+str(xscore) +"; O: "+str(oscore)), True, 'white', 'black')
         self.game.screen.blit(l, (10, 10))
@@ -87,9 +87,9 @@ class Tic_tac_toe:
         global xscore,oscore, money
         if self.winner:
             if self.winner == 'tie':
-                label = self.font.render('No winner', True, 'white', 'black')
+                label = self.font.render('No winner', True, 'white', 'gold')
                 self.game.screen.blit(label, (windowSize // 2 - label.get_width() // 2, windowSize // 4))
-                label2 = self.font.render('Press space to restart', True, 'white', 'black')
+                label2 = self.font.render('Press space to restart', True, 'white', 'gold')
                 self.game.screen.blit(label2, (windowSize // 2 - label2.get_width() // 2, windowSize // 2))
                 label3 = self.font.render('Press q to quit', True, 'white', 'gold')
                 self.game.screen.blit(label3, (windowSize // 2 - label2.get_width() // 2, windowSize // 2 +100))
@@ -136,6 +136,7 @@ class Tic_tac_toe:
                     money+=random.randint(3,7)
         if self.steps == 9 and not self.winner:
             self.winner = 'tie'
+            money+=1
 
 
 class FinalGame:
@@ -168,7 +169,6 @@ class FinalGame:
 
     def runAgain(self):
         self.t = Tic_tac_toe(self)
-
 
 
 
