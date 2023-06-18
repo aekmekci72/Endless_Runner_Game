@@ -1,3 +1,5 @@
+#add coins 
+
 import subprocess
 import pygame as py, sys, random
 py.init()

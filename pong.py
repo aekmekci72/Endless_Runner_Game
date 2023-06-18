@@ -1,9 +1,4 @@
-# end 
-# q for quit
-#winniing restart
-
-
-import subprocess
+import subprocess, random
 import pygame as py
 
 py.init()
@@ -20,7 +15,7 @@ py.display.set_caption("Pong Game")
 p_height = 150
 p_width=18
 global w_score
-w_score = 5
+w_score = 1
 
 
 class Ball:
@@ -160,7 +155,9 @@ global won
 global win_text
 won = False
 
+
 def main():
+    money=0
     global won, w_score, win_text
     clock = py.time.Clock()
     FPS = 60
@@ -213,7 +210,12 @@ def main():
             text = font.render(win_text, 1, white)
             window.blit(text, (w//2 - text.get_width() //2, h//2 - text.get_height()//2))
             text2 = font.render("Press space to restart, q to quit", 1, white)
+            
+            money+=random.randint(2, 6)
+
             window.blit(text2, (w//2 - text2.get_width() //2, h//2 + text2.get_height()//2))
+            text3 = font.render("Money: "+str(money), 1, white)
+            window.blit(text3, (350,510))
             py.display.update()
 
             while True:

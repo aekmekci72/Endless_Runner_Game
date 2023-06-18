@@ -1,8 +1,5 @@
-#make score work
-#score=timer?
-#power ups
+#power ups: add a speed boost, shield, and coin multiplier powerup
 #more obstacles
-
 
 import pygame
 import math

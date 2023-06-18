@@ -1,4 +1,5 @@
-# add a restart feature, maybe add a feature where other cars can merge lanes (with an indicator to make game harder), better position you died message
+# add a restart feature
+# add coins
 
 import random; import pygame as py; from pygame.locals import *
 import subprocess
