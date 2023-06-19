@@ -1,6 +1,3 @@
-# add a restart +pause
-# add coins
-
 import random; import pygame as py; from pygame.locals import *
 import subprocess
 

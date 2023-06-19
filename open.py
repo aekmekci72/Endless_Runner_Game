@@ -5,7 +5,7 @@ import random
 
 pygame.init()
 screen = pygame.display.set_mode()
-pygame.display.set_caption('Sick or Swim')
+pygame.display.set_caption('Autumn Arcade')
 
 clock = pygame.time.Clock()
 font = pygame.font.Font('images/Neucha-Regular.ttf', 60)
@@ -31,6 +31,7 @@ with open('highscores.txt', 'w') as h:
 
 counter = 1
 
+
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -50,4 +51,3 @@ while True:
     clock.tick(250)
 
 pygame.quit()
-
