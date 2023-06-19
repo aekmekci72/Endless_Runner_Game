@@ -1,6 +1,3 @@
-#power ups: add a speed boost, shield, and coin multiplier powerup
-#more obstacles
-
 import pygame
 import math
 import random
@@ -59,6 +56,17 @@ class Coin(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
+
+class SpeedBoost(pygame.sprite.Sprite):
+    def __init__(self, x, y):
+        super().__init__()
+        self.image = pygame.image.load("images/powerup.png").convert_alpha()
+        self.image = pygame.transform.scale(self.image, (50,50))
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+
+
 class Player(pygame.sprite.Sprite):
     def __init__(self, x, y):
         super().__init__()
@@ -114,6 +122,7 @@ class Player(pygame.sprite.Sprite):
             self.image = self.animlist[indexon]
 obstacle_group = pygame.sprite.Group()
 coin_group = pygame.sprite.Group()
+speed_group = pygame.sprite.Group()
 
 global run
 run = True
@@ -121,6 +130,8 @@ freq=250
 counter=0
 coin_counter = 0
 coin_freq = 400
+s_counter = 0
+s_freq = 500
 global pause
 pause=False
 
@@ -160,6 +171,10 @@ def paused():
         pygame.display.update()
         clock.tick(15)  
 dash_bar_width = player.dash / DASH_MAX * 100
+
+speed_boost_duration = 0
+
+
 while run:
     if pause!=True:
         if player.is_jumping:
@@ -193,10 +208,16 @@ while run:
             counter=0
             
         coin_counter += 1
+        s_counter += 1
         if coin_counter >= coin_freq:
             new_coin = Coin(SCREEN_WIDTH, random.randint(SCREEN_HEIGHT-150,SCREEN_HEIGHT-50))
             coin_group.add(new_coin)
             coin_counter = 0
+        
+        if s_counter >= s_freq:
+            new_s = SpeedBoost(SCREEN_WIDTH, random.randint(SCREEN_HEIGHT-150,SCREEN_HEIGHT-50))
+            speed_group.add(new_s)
+            s_counter = 0
 
         last_obstacle_passed = None
         for obstacle in obstacle_group:
@@ -204,14 +225,23 @@ while run:
             if player.rect.colliderect(obstacle.rect) and obstacle.rect.right < player.rect.left:
                 last_obstacle_passed = obstacle  # Update last_obstacle_passed
 
+
         for coin in coin_group:
             coin.rect.x -= scrollmin
             if player.rect.colliderect(coin.rect):
                 coin_group.remove(coin)
                 player.money+=1
+        
+        for s in speed_group:
+            s.rect.x -= scrollmin
+            if player.rect.colliderect(s.rect):
+                speed_group.remove(s)
+                player.money*=2
+
 
         obstacle_group.draw(screen)
         coin_group.draw(screen)
+        speed_group.draw(screen)
         player_group.update()
         player_group.draw(screen)
         scroll -= scrollmin
