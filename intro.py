@@ -1,5 +1,3 @@
-#FOR ALL GAMES, PAUSE AND QUIT, LEADERBOARD, HIGH SCORE
-
 import random
 import pygame
 import os
