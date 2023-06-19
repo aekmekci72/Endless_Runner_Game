@@ -1,6 +1,3 @@
-#make it work
-#add coins
-
 import pygame
 import math
 import random
