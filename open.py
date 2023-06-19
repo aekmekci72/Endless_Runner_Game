@@ -17,7 +17,7 @@ color_dark = (100, 100, 100)
 width = screen.get_width()
 height = screen.get_height()
 smallfont = pygame.font.SysFont('Arial', 35)
-text = smallfont.render('S T A R T', True, color)
+text = smallfont.render('S T A R T', True, color) 
 
 splash_page = pygame.image.load('images/autumnarcade.png')
 scaled_splash = pygame.transform.scale(splash_page, (800, 800))
