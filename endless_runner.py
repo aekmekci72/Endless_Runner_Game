@@ -57,7 +57,7 @@ class Coin(pygame.sprite.Sprite):
         self.rect.x = x
         self.rect.y = y
 
-class SpeedBoost(pygame.sprite.Sprite):
+class CoinMult(pygame.sprite.Sprite):
     def __init__(self, x, y):
         super().__init__()
         self.image = pygame.image.load("images/powerup.png").convert_alpha()
@@ -66,7 +66,7 @@ class SpeedBoost(pygame.sprite.Sprite):
         self.rect.x = x
         self.rect.y = y
 
-class ShieldPowerup(pygame.sprite.Sprite):
+class FireEnemy(pygame.sprite.Sprite):
     def __init__(self, x, y):
         super().__init__()
         self.image = pygame.image.load("images/fire.png").convert_alpha()
@@ -107,9 +107,9 @@ class Player(pygame.sprite.Sprite):
         self.is_jumping = False
         self.dash = DASH_MAX
 
-        self.has_shield = False
-        self.shield_duration = 0
-        self.max_shield_duration = 300  # Adjust the duration as needed
+        self.has_enemy = False
+        self.enemy_duration = 0
+        self.max_enemy_duration = 300
 
 
     def update(self):
@@ -134,16 +134,16 @@ class Player(pygame.sprite.Sprite):
         else:
             self.image = self.animlist[indexon]
 
-        if self.has_shield:
-                self.shield_duration += 1
-                if self.shield_duration >= self.max_shield_duration:
-                    self.has_shield = False
-                    self.shield_duration = 0
+        if self.has_enemy:
+                self.enemy_duration += 1
+                if self.enemy_duration >= self.max_enemy_duration:
+                    self.has_enemy = False
+                    self.enemy_duration = 0
 
 obstacle_group = pygame.sprite.Group()
 coin_group = pygame.sprite.Group()
-speed_group = pygame.sprite.Group()
-shield_group = pygame.sprite.Group()
+coinmult_group = pygame.sprite.Group()
+enemy_group = pygame.sprite.Group()
 
 
 global run
@@ -154,8 +154,8 @@ coin_counter = 0
 coin_freq = 400
 s_counter = 0
 s_freq = 500
-shield_counter = 0
-shield_freq = 800
+enemy_counter = 0
+enemy_freq = 800
 
 global pause
 pause=False
@@ -197,7 +197,7 @@ def paused():
         clock.tick(15)  
 dash_bar_width = player.dash / DASH_MAX * 100
 
-speed_boost_duration = 0
+coinmult_boost_duration = 0
 
 
 while run:
@@ -240,16 +240,16 @@ while run:
             coin_counter = 0
         
         if s_counter >= s_freq:
-            new_s = SpeedBoost(SCREEN_WIDTH, random.randint(SCREEN_HEIGHT-150,SCREEN_HEIGHT-50))
-            speed_group.add(new_s)
+            new_c = CoinMult(SCREEN_WIDTH, random.randint(SCREEN_HEIGHT-150,SCREEN_HEIGHT-50))
+            coinmult_group.add(new_c)
             s_counter = 0
 
-        shield_counter += 1
+        enemy_counter += 1
 
-        if shield_counter >= shield_freq:
-            new_shield = ShieldPowerup(SCREEN_WIDTH, random.randint(SCREEN_HEIGHT - 150, SCREEN_HEIGHT - 50))
-            shield_group.add(new_shield)
-            shield_counter = 0
+        if enemy_counter >= enemy_freq:
+            new_enemy = FireEnemy(SCREEN_WIDTH, random.randint(SCREEN_HEIGHT - 150, SCREEN_HEIGHT - 50))
+            enemy_group.add(new_enemy)
+            enemy_counter = 0
 
 
         last_obstacle_passed = None
@@ -265,30 +265,29 @@ while run:
                 coin_group.remove(coin)
                 player.money+=1
         
-        for s in speed_group:
+        for s in coinmult_group:
             s.rect.x -= scrollmin
             if player.rect.colliderect(s.rect):
-                speed_group.remove(s)
+                coinmult_group.remove(s)
                 player.money*=2
 
-        for shield in shield_group:
-            shield.rect.x -= scrollmin
-            if player.rect.colliderect(shield.rect):
-                shield_group.remove(shield)
-                player.has_shield = True
-                if die and player.has_shield:
+        for e in enemy_group:
+            e.rect.x -= scrollmin
+            if player.rect.colliderect(e.rect):
+                enemy_group.remove(e)
+                player.has_enemy = True
+                if die and player.has_enemy:
                     run = True
-                    print("sdf")
                 else:
                     run=False
 
 
         obstacle_group.draw(screen)
         coin_group.draw(screen)
-        speed_group.draw(screen)
+        coinmult_group.draw(screen)
         player_group.update()
         player_group.draw(screen)
-        shield_group.draw(screen)
+        enemy_group.draw(screen)
         scroll -= scrollmin
 
 
