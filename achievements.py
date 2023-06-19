@@ -24,12 +24,12 @@ running = True
 clock = pygame.time.Clock()
 
 achievements = [
-    {"name": "Road Runner (750 points in Maple Rush)", "achieved": False},
-    {"name": "Cosmic Annihilator (500 points in Galactic Gourds)", "achieved": False},
-    {"name": "Winged Wonder (500 points in Acorn Ascend)", "achieved": False},
-    {"name": "Clicking Maestro (1000000 clicks in Sweater Weather Treats)", "achieved": False},
-    {"name": "Reptilian Ruler (25 apples in Pumpkin Python)", "achieved": False},
-    {"name": "Speed Demon (50 points in Fall Fury)", "achieved": False},
+    {"name": "Road Runner (500 points in Maple Rush)", "achieved": False},
+    {"name": "Cosmic Annihilator (250 points in Galactic Gourds)", "achieved": False},
+    {"name": "Winged Wonder (300 points in Acorn Ascend)", "achieved": False},
+    {"name": "Clicking Maestro (50000 clicks in Sweater Weather Treats)", "achieved": False},
+    {"name": "Reptilian Ruler (15 apples in Pumpkin Python)", "achieved": False},
+    {"name": "Speed Demon (25 points in Fall Fury)", "achieved": False},
     {"name": "Money Master (have >=250 coins)", "achieved": False}
 ]
 
@@ -50,17 +50,17 @@ for g in c:
     c[x]=g.strip()
     c[x]=int(c[x])
 
-if c[0]>=750:
+if c[0]>=500:
     (achievements[0])["achieved"]=True
-if c[2]>=500:
+if c[2]>=250:
     (achievements[1])["achieved"]=True
-if c[4]>=500:
+if c[4]>=300:
     (achievements[2])["achieved"]=True
-if c[5]>=1000000:
+if c[5]>=50000:
     (achievements[3])["achieved"]=True
-if c[6]>=25:
+if c[6]>=15:
     (achievements[4])["achieved"]=True
-if c[7]>=50:
+if c[7]>=25:
     (achievements[5])["achieved"]=True
 
 while running:

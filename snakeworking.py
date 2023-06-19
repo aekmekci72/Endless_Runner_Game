@@ -100,6 +100,15 @@ class Snake:
             with open('highscores.txt', 'w') as y:
                 for t in c:
                     y.write(str(t)+"\n")
+            with open("money.txt") as f:
+                contents = f.readlines()
+            m=""
+            for thing in contents:
+                m+=thing
+            m=int(m)
+            m+=money
+            with open('money.txt', 'w') as h:
+                h.write(str(m))
             subprocess.Popen("python end_screen.py")
             py.quit()
 
