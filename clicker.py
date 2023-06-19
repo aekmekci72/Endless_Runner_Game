@@ -1,9 +1,6 @@
 import pygame as py
 import sys, random
 import subprocess
-import music
-
-music.play_music4()
 
 py.init()
 clock = py.time.Clock()
