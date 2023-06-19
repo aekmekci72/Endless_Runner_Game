@@ -1,5 +1,8 @@
 import subprocess
-import pygame as py, sys, random
+import pygame as py, sys, random, music
+
+music.play_music6()
+
 py.init()
 clock = py.time.Clock()
 screen_width = 800

@@ -17,7 +17,7 @@ xscore=0
 oscore=0
 money = 0
 
-# music.play_music2()
+music.play_music3()
 
 class Tic_tac_toe:
     global xscore, oscore, money
