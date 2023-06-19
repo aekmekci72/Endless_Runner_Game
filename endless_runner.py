@@ -66,6 +66,17 @@ class CoinMult(pygame.sprite.Sprite):
         self.rect.x = x
         self.rect.y = y
 
+class Speed(pygame.sprite.Sprite):
+    def __init__(self, x, y):
+        super().__init__()
+        self.image = pygame.image.load("images/speedpower.png").convert_alpha()
+        self.image = pygame.transform.scale(self.image, (50,50))
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+    def update(self):
+        pass
+
 class FireEnemy(pygame.sprite.Sprite):
     def __init__(self, x, y):
         super().__init__()
@@ -143,6 +154,7 @@ class Player(pygame.sprite.Sprite):
 obstacle_group = pygame.sprite.Group()
 coin_group = pygame.sprite.Group()
 coinmult_group = pygame.sprite.Group()
+speed_group = pygame.sprite.Group()
 enemy_group = pygame.sprite.Group()
 
 
@@ -152,6 +164,8 @@ freq=250
 counter=0
 coin_counter = 0
 coin_freq = 400
+speed_counter = 0
+speed_freq = 400
 s_counter = 0
 s_freq = 500
 enemy_counter = 0
@@ -233,6 +247,7 @@ while run:
             counter=0
             
         coin_counter += 1
+        speed_counter += 1
         s_counter += 1
         if coin_counter >= coin_freq:
             new_coin = Coin(SCREEN_WIDTH, random.randint(SCREEN_HEIGHT-150,SCREEN_HEIGHT-50))
@@ -243,6 +258,11 @@ while run:
             new_c = CoinMult(SCREEN_WIDTH, random.randint(SCREEN_HEIGHT-150,SCREEN_HEIGHT-50))
             coinmult_group.add(new_c)
             s_counter = 0
+        
+        if speed_counter >= speed_freq:
+            new_speed = Speed(SCREEN_WIDTH, random.randint(SCREEN_HEIGHT-150,SCREEN_HEIGHT-50))
+            speed_group.add(new_speed)
+            speed_counter = 0
 
         enemy_counter += 1
 
@@ -264,7 +284,12 @@ while run:
             if player.rect.colliderect(coin.rect):
                 coin_group.remove(coin)
                 player.money+=1
-        
+
+        for s in speed_group:
+            s.rect.x -= scrollmin
+            if player.rect.colliderect(s.rect):
+                speed_group.remove(s)
+                scrollmin *=3
         for s in coinmult_group:
             s.rect.x -= scrollmin
             if player.rect.colliderect(s.rect):
@@ -285,6 +310,7 @@ while run:
         obstacle_group.draw(screen)
         coin_group.draw(screen)
         coinmult_group.draw(screen)
+        speed_group.draw(screen)
         player_group.update()
         player_group.draw(screen)
         enemy_group.draw(screen)
