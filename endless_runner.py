@@ -3,7 +3,9 @@ import math
 import random
 import os
 import subprocess
+import music
 
+music.play_music()
 
 pygame.init()
 clock = pygame.time.Clock()
