@@ -1,6 +1,7 @@
 import random
 from random import randint
 import pygame, sys, subprocess
+import music
 
 windowSize = 800
 
@@ -15,6 +16,8 @@ global xscore, oscore, money
 xscore=0
 oscore=0
 money = 0
+
+# music.play_music2()
 
 class Tic_tac_toe:
     global xscore, oscore, money

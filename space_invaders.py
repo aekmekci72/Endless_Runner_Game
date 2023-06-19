@@ -1,6 +1,7 @@
 import pygame
 import random
 import subprocess
+import music
 
 pygame.init()
 
@@ -20,6 +21,8 @@ enemy_image = pygame.image.load("images/invader.png").convert_alpha()
 enemy_image = pygame.transform.scale(enemy_image, (64, 64))
 circle_image = pygame.image.load("images/bullet.png").convert_alpha()
 circle_image = pygame.transform.scale(circle_image, (32, 32))
+
+music.play_music2()
 
 w = 5
 
