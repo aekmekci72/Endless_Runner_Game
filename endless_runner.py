@@ -66,6 +66,17 @@ class CoinMult(pygame.sprite.Sprite):
         self.rect.x = x
         self.rect.y = y
 
+class Shield(pygame.sprite.Sprite):
+    def __init__(self, x, y):
+        super().__init__()
+        self.image = pygame.image.load("images/shield.png").convert_alpha()
+        self.image = pygame.transform.scale(self.image, (50,50))
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+
+count = 0
+
 class Speed(pygame.sprite.Sprite):
     def __init__(self, x, y):
         super().__init__()
@@ -154,6 +165,7 @@ class Player(pygame.sprite.Sprite):
 obstacle_group = pygame.sprite.Group()
 coin_group = pygame.sprite.Group()
 coinmult_group = pygame.sprite.Group()
+shield_group = pygame.sprite.Group()
 speed_group = pygame.sprite.Group()
 enemy_group = pygame.sprite.Group()
 
@@ -164,6 +176,8 @@ freq=250
 counter=0
 coin_counter = 0
 coin_freq = 400
+shield_counter=0
+shield_freq = 200
 speed_counter = 0
 speed_freq = 400
 s_counter = 0
@@ -179,6 +193,7 @@ scrollmin=5
 player = Player(50, SCREEN_HEIGHT - 65)
 player_group = pygame.sprite.Group()
 player_group.add(player)
+
 
 def paused():
     global pause, run
@@ -213,6 +228,10 @@ dash_bar_width = player.dash / DASH_MAX * 100
 
 coinmult_boost_duration = 0
 
+global saftetyon
+saftetyon=False
+
+num_of_uses = 0
 
 while run:
     if pause!=True:
@@ -247,12 +266,18 @@ while run:
             counter=0
             
         coin_counter += 1
+        shield_counter += 1
         speed_counter += 1
         s_counter += 1
         if coin_counter >= coin_freq:
             new_coin = Coin(SCREEN_WIDTH, random.randint(SCREEN_HEIGHT-150,SCREEN_HEIGHT-50))
             coin_group.add(new_coin)
             coin_counter = 0
+
+        if shield_counter >= shield_freq:
+            new_shield = Shield(SCREEN_WIDTH, random.randint(SCREEN_HEIGHT-150,SCREEN_HEIGHT-50))
+            shield_group.add(new_shield)
+            shield_counter = 0
         
         if s_counter >= s_freq:
             new_c = CoinMult(SCREEN_WIDTH, random.randint(SCREEN_HEIGHT-150,SCREEN_HEIGHT-50))
@@ -276,7 +301,7 @@ while run:
         for obstacle in obstacle_group:
             obstacle.rect.x -= scrollmin
             if player.rect.colliderect(obstacle.rect) and obstacle.rect.right < player.rect.left:
-                last_obstacle_passed = obstacle  # Update last_obstacle_passed
+                last_obstacle_passed = obstacle
 
 
         for coin in coin_group:
@@ -296,6 +321,13 @@ while run:
                 coinmult_group.remove(s)
                 player.money*=2
 
+        for shield in shield_group:
+            shield.rect.x -= scrollmin
+            if player.rect.colliderect(shield.rect):
+                count+=1
+                shield_group.remove(shield)
+                saftetyon = True
+
         for e in enemy_group:
             e.rect.x -= scrollmin
             if player.rect.colliderect(e.rect):
@@ -304,12 +336,16 @@ while run:
                 if die and player.has_enemy:
                     run = True
                 else:
-                    run=False
+                    if saftetyon:
+                        run = True
+                    else:
+                        run=False
 
 
         obstacle_group.draw(screen)
         coin_group.draw(screen)
         coinmult_group.draw(screen)
+        shield_group.draw(screen)
         speed_group.draw(screen)
         player_group.update()
         player_group.draw(screen)
@@ -319,7 +355,17 @@ while run:
 
         die = pygame.sprite.spritecollide(player, obstacle_group, False)
         if die:
-            run = False
+            if saftetyon:
+                if num_of_uses > count:
+                    saftetyon = False
+                else:
+                    run = True
+                    num_of_uses+=1
+                    count-=1
+                    obstacle_group.remove(die)
+            
+            else:
+                run = False
         if abs(scroll) > bg_width:
             scroll = 0
 
@@ -350,7 +396,6 @@ while run:
 
             if event.type==pygame.MOUSEBUTTONDOWN:
                 position=pygame.mouse.get_pos()
-                print("mouse clicked")
 
         if r==True:
             if player.dash >=DASH_CONSUME_RATE:
@@ -368,6 +413,9 @@ while run:
         font = pygame.font.Font(None, 36)
         score_text = font.render(f"Score: {score}", True, (0, 0, 0))
         screen.blit(score_text, (10, 10))
+
+        shield_text = font.render(f"Shield: {str(count)}", True, (0, 0, 0))
+        screen.blit(shield_text, (10,110))
 
         money_text = font.render(f"Money: {player.money}", True, (0, 0, 0))
         screen.blit(money_text, (10, 70))
