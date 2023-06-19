@@ -17,7 +17,7 @@ DASH_REGEN_RATE = 0.2
 DASH_CONSUME_RATE = 1
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Endless Runner Game")
-bg = pygame.image.load("images/autumnscroll.jpg").convert_alpha()
+bg = pygame.image.load("images/backg.png").convert_alpha()
 bg=pygame.transform.scale(bg, (SCREEN_WIDTH, SCREEN_HEIGHT))
 bg_width = bg.get_width()
 bg_rect = bg.get_rect()
@@ -191,6 +191,10 @@ while run:
             score+=1
             if indexon==8:
                 indexon=0
+        if (megacount%25==0):
+            freq-=1
+            if freq==50:
+                freq=50
         
         clock.tick(FPS)
         
@@ -265,12 +269,13 @@ while run:
                     run=False
                 if event.key == pygame.K_RIGHT:
                     r=True
+                    oldfreq=freq
 
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_RIGHT:
                     r=False
                     scrollmin=5
-                    freq=250
+                    freq=oldfreq
             
 
             if event.type==pygame.MOUSEBUTTONDOWN:
@@ -282,10 +287,10 @@ while run:
                 player.dash-=DASH_CONSUME_RATE
                 dash_bar_width = player.dash / DASH_MAX * 100
                 scrollmin=10
-                freq=125
+                freq=oldfreq-100
             else:
                 scrollmin=5
-                freq=250
+                freq=oldfreq
 
         dash_bar_width = player.dash / DASH_MAX * 100
         pygame.draw.rect(screen, (0, 0, 0), (10, 50, 100, 10))

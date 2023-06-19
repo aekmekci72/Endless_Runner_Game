@@ -163,6 +163,15 @@ class FinalGame:
                 if e.key == pygame.K_SPACE:
                     self.runAgain()
                 if e.key == pygame.K_q:
+                    with open("money.txt") as f:
+                        contents = f.readlines()
+                    m=""
+                    for thing in contents:
+                        m+=thing
+                    m=int(m)
+                    m+=money
+                    with open('money.txt', 'w') as h:
+                        h.write(str(m))
                     subprocess.Popen("python intro.py")
                     pygame.quit()
 
