@@ -1,5 +1,3 @@
-#beautify
-
 import pygame as py
 import sys, random
 import subprocess

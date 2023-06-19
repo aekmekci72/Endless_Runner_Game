@@ -1,5 +1,3 @@
-#add pause
-
 import subprocess, random
 import pygame as py
 
@@ -167,12 +165,13 @@ def main():
     lp = Paddle(10, h//2 - p_height //2, p_height, p_width)
     ball = Ball(w // 2, h // 2, ball_r)
     rp = Paddle(w - 10 - p_width, h //2 - p_height//2, p_height, p_width)
-    
+
     rscore = 0
     lscore = 0
 
     go = True
     restart = False 
+    paused = False  # add a paused variable
 
     while go:
         clock.tick(FPS)
@@ -185,19 +184,22 @@ def main():
                 if event.key == py.K_q:
                     subprocess.Popen("python intro.py")
                     py.quit()
+                if event.key == py.K_p:  # check for 'p' key press
+                    paused = not paused  # toggle paused variable
 
-        if ball.x < 0:
-            rscore += 1
-            ball.restart()
-        if ball.x > w:
-            lscore += 1
-            ball.restart()
+        if not paused:  # only update game if not paused
+            if ball.x < 0:
+                rscore += 1
+                ball.restart()
+            if ball.x > w:
+                lscore += 1
+                ball.restart()
 
-        keypress = py.key.get_pressed()
-        p_move(keypress, rp, lp)
+            keypress = py.key.get_pressed()
+            p_move(keypress, rp, lp)
 
-        ball.update()
-        interact(ball, rp, lp)
+            ball.update()
+            interact(ball, rp, lp)
 
         if lscore >= w_score:
             won = True
@@ -212,7 +214,7 @@ def main():
             text = font.render(win_text, 1, white)
             window.blit(text, (w//2 - text.get_width() //2, h//2 - text.get_height()//2))
             text2 = font.render("Press space to restart, q to quit", 1, white)
-            
+
             money+=random.randint(2, 6)
 
             window.blit(text2, (w//2 - text2.get_width() //2, h//2 + text2.get_height()//2))
