@@ -16,7 +16,7 @@ DASH_REGEN_RATE = 0.2
 DASH_CONSUME_RATE = 1
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Endless Runner Game")
-bg = pygame.image.load("images/autumnscroll.jpg").convert_alpha()
+bg = pygame.image.load("images/scrollerbackground.png").convert_alpha()
 bg=pygame.transform.scale(bg, (SCREEN_WIDTH, SCREEN_HEIGHT))
 bg_width = bg.get_width()
 bg_rect = bg.get_rect()
@@ -146,11 +146,16 @@ dash_bar_width = player.dash / DASH_MAX * 100
 while run:
     if pause != True:
         megacount += 1
-        if megacount % 5 == 0:
-            indexon += 1
+        if(megacount%5==0):
+            indexon+=1
             score+=1
-            if indexon == 3:
-                indexon = 0
+            if indexon==3:
+                indexon=0
+        if (megacount%25==0):
+            freq-=1
+            if freq==50:
+                freq=50
+            print(freq)
 
         clock.tick(FPS)
 
@@ -213,37 +218,40 @@ while run:
                     run = False
                 if event.key == pygame.K_RIGHT:
                     r = True
+                    oldfreq=freq
 
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_RIGHT:
                     r = False
                     scrollmin = 5
-                    freq = 250
+                    freq = oldfreq
+
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 position = pygame.mouse.get_pos()
 
-        if r == True:
-            if player.dash >= DASH_CONSUME_RATE:
-                player.dash -= DASH_CONSUME_RATE
+        if r==True:
+            if player.dash >=DASH_CONSUME_RATE:
+                player.dash-=DASH_CONSUME_RATE
                 dash_bar_width = player.dash / DASH_MAX * 100
-                scrollmin = 10
-                freq = 125
+                scrollmin=10
+                freq=oldfreq-100
             else:
-                scrollmin = 5
-                freq = 250
+                scrollmin=5
+                freq=oldfreq
+
 
         dash_bar_width = player.dash / DASH_MAX * 100
         pygame.draw.rect(screen, (0, 0, 0), (10, 50, 100, 10))
         pygame.draw.rect(screen, (0, 255, 0), (10, 50, dash_bar_width, 10))
         font = pygame.font.Font(None, 36)
-        score_text = font.render(f"Score: {score}", True, (0, 0, 0))
+        score_text = font.render(f"Score: {score}", True, (225, 225, 225))
         screen.blit(score_text, (10, 10))
 
-        money_text = font.render(f"Money: {player.money}", True, (0, 0, 0))
+        money_text = font.render(f"Money: {player.money}", True, (225, 225, 225))
         screen.blit(money_text, (10, 70))
 
-        pause_text = font.render("Press 'P' to pause", True, (0, 0, 0))
+        pause_text = font.render("Press 'P' to pause", True, (225, 225, 225))
         screen.blit(pause_text, (SCREEN_WIDTH-250, 10))
 
         pygame.display.update()

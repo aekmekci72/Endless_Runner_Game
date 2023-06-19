@@ -20,7 +20,7 @@ DASH_REGEN_RATE = 0.2
 DASH_CONSUME_RATE = 1
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Endless Runner Game")
-bg = pygame.image.load("images/autumnscroll.jpg").convert_alpha()
+bg = pygame.image.load("images/backg.png").convert_alpha()
 bg=pygame.transform.scale(bg, (SCREEN_WIDTH, SCREEN_HEIGHT))
 bg_width = bg.get_width()
 bg_rect = bg.get_rect()
