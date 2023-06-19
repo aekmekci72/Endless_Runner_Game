@@ -66,6 +66,14 @@ class SpeedBoost(pygame.sprite.Sprite):
         self.rect.x = x
         self.rect.y = y
 
+class ShieldPowerup(pygame.sprite.Sprite):
+    def __init__(self, x, y):
+        super().__init__()
+        self.image = pygame.image.load("images/fire.png").convert_alpha()
+        self.image = pygame.transform.scale(self.image, (50, 50))
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, x, y):
@@ -99,6 +107,11 @@ class Player(pygame.sprite.Sprite):
         self.is_jumping = False
         self.dash = DASH_MAX
 
+        self.has_shield = False
+        self.shield_duration = 0
+        self.max_shield_duration = 300  # Adjust the duration as needed
+
+
     def update(self):
         self.velocity_y += GRAVITY
         self.rect.y += self.velocity_y
@@ -120,9 +133,18 @@ class Player(pygame.sprite.Sprite):
             self.image = self.jumplist[jumpon]
         else:
             self.image = self.animlist[indexon]
+
+        if self.has_shield:
+                self.shield_duration += 1
+                if self.shield_duration >= self.max_shield_duration:
+                    self.has_shield = False
+                    self.shield_duration = 0
+
 obstacle_group = pygame.sprite.Group()
 coin_group = pygame.sprite.Group()
 speed_group = pygame.sprite.Group()
+shield_group = pygame.sprite.Group()
+
 
 global run
 run = True
@@ -132,6 +154,9 @@ coin_counter = 0
 coin_freq = 400
 s_counter = 0
 s_freq = 500
+shield_counter = 0
+shield_freq = 800
+
 global pause
 pause=False
 
@@ -219,6 +244,14 @@ while run:
             speed_group.add(new_s)
             s_counter = 0
 
+        shield_counter += 1
+
+        if shield_counter >= shield_freq:
+            new_shield = ShieldPowerup(SCREEN_WIDTH, random.randint(SCREEN_HEIGHT - 150, SCREEN_HEIGHT - 50))
+            shield_group.add(new_shield)
+            shield_counter = 0
+
+
         last_obstacle_passed = None
         for obstacle in obstacle_group:
             obstacle.rect.x -= scrollmin
@@ -238,12 +271,24 @@ while run:
                 speed_group.remove(s)
                 player.money*=2
 
+        for shield in shield_group:
+            shield.rect.x -= scrollmin
+            if player.rect.colliderect(shield.rect):
+                shield_group.remove(shield)
+                player.has_shield = True
+                if die and player.has_shield:
+                    run = True
+                    print("sdf")
+                else:
+                    run=False
+
 
         obstacle_group.draw(screen)
         coin_group.draw(screen)
         speed_group.draw(screen)
         player_group.update()
         player_group.draw(screen)
+        shield_group.draw(screen)
         scroll -= scrollmin
 
 
