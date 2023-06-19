@@ -155,7 +155,6 @@ while run:
             freq-=1
             if freq==50:
                 freq=50
-            print(freq)
 
         clock.tick(FPS)
 
@@ -272,7 +271,6 @@ with open("highscores.txt") as z:
 for g in c:
     x=c.index(g)
     c[x]=g.strip()
-print(c)
 x=(c[4])
 if int(x) < score:
     c[4] = str(score)

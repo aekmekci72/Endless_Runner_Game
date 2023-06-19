@@ -308,6 +308,28 @@ while running==True:
                 h.write(str(m))
             subprocess.Popen("python end_screen.py")
             py.quit()
+
+        for car in enemy: # collision after lane switch
+            if py.sprite.collide_rect(player, car):
+                        
+                run = True
+                        
+                if i.key == K_RIGHT:
+                    player.rect.right = car.rect.left
+                    showdeath.center = [
+                        player.rect.right,
+                        (player.rect.center[1] + car.rect.center[1]) / 2
+                    ]
+                        
+                if i.key == K_LEFT:
+                    player.rect.left = car.rect.right
+                    showdeath.center = [
+                        player.rect.left,
+                        (player.rect.center[1] + car.rect.center[1]) / 2
+                    ]
+            for coin in coins:
+                if py.sprite.collide_rect(car,coin):
+                    coin.kill() 
         
         display.blit(show, div)
         display.blit(show1, div1)
