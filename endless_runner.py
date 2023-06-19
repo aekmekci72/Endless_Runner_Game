@@ -177,13 +177,13 @@ counter=0
 coin_counter = 0
 coin_freq = 400
 shield_counter=0
-shield_freq = 200
+shield_freq = 2000
 speed_counter = 0
 speed_freq = 400
 s_counter = 0
-s_freq = 500
+s_freq = 800
 enemy_counter = 0
-enemy_freq = 800
+enemy_freq = 900
 
 global pause
 pause=False
