@@ -47,7 +47,7 @@ achievements = [
     {"name": "Galactic Gourds: "+str(c[2])},
     {"name": "Acorn Ascend: "+str(c[4])},
     {"name": "Sweater Weather Treats: "+str(c[5])},
-    {"name": "Punkin Python: "+str(c[6])},
+    {"name": "Pumpkin Python: "+str(c[6])},
     {"name": "Fall Fury: "+str(c[7])},
     
 ]
