@@ -40,7 +40,7 @@ with open("highscores.txt") as z:
 for g in c:
     x=c.index(g)
     c[x]=g.strip()
-    c[x]=int(c[x])
+    c[x]=float(c[x])
 
 achievements = [
     {"name": "Maple Rush: "+str(c[0])},

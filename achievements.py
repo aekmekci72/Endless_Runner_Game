@@ -48,7 +48,7 @@ with open("highscores.txt") as z:
 for g in c:
     x=c.index(g)
     c[x]=g.strip()
-    c[x]=int(c[x])
+    c[x]=float(c[x])
 
 if c[0]>=500:
     (achievements[0])["achieved"]=True

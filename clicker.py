@@ -247,7 +247,7 @@ class Control:
         py.draw.rect(window, "#522920", self.clickMultBtn, border_radius=15)
         self.clickmult_description = self.font.render(f"Buy Click Multiplier", True, "#eee0b1")
         self.clickmult_c = self.font.render(f"({self.click_multipliercost} cookies)", True, "#eee0b1")
-        self.clickmult_update = self.font.render(f"{int(self.click_multipliers)}x -> {self.click_multipliers+0.25}x)", True, "#eee0b1")
+        self.clickmult_update = self.font.render(f"{float(self.click_multipliers)}x -> {self.click_multipliers+0.25}x)", True, "#eee0b1")
         window.blit(self.clickmult_description, (725, 365))
         window.blit(self.clickmult_c, (725, 395))
         window.blit(self.clickmult_update, (725, 425))
@@ -293,7 +293,7 @@ while running:
                 x=c.index(g)
                 c[x]=g.strip()
             x=(c[5])
-            if int(x) < controller.num_of_cookies:
+            if float(x) < controller.num_of_cookies:
                 c[5] = str(controller.num_of_cookies)
             with open('highscores.txt', 'w') as y:
                 for t in c:
